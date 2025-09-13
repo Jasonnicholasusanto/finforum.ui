@@ -18,7 +18,7 @@ export default function LandingPage() {
           </p>
           <div className="mt-2">
             <Button asChild size="lg" variant="glass">
-              <Link href="/sign-up">Join the Forum</Link>
+              <Link href="/auth/sign-up">Join the Forum</Link>
             </Button>
           </div>
         </section>

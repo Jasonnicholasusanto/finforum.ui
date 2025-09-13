@@ -145,7 +145,7 @@ export function SignUpForm({
                   <div className="flex-grow border-t border-muted-foreground"></div>
                 </div>
 
-                <div className="grid gap-6">
+                <div className="grid gap-4">
                   <div className="grid gap-3">
                     <Label htmlFor="email">Email</Label>
                     <Input
@@ -160,7 +160,7 @@ export function SignUpForm({
                     />
                   </div>
 
-                  <div className="grid gap-3">
+                  <div className="grid gap-1">
                     <Label htmlFor="password">Password</Label>
                     <Input
                       id="password"
@@ -189,12 +189,12 @@ export function SignUpForm({
                       onChange={(e) => setRepeatPassword(e.target.value)}
                     />
                   </div>
-
-                  {error && <p className="text-sm text-red-500">{error}</p>}
-                  <Button type="submit" className="w-full">
-                    {isLoading ? "Creating account..." : "Create account"}
-                  </Button>
                 </div>
+
+                {error && <p className="text-sm text-red-500">{error}</p>}
+                <Button type="submit" className="w-full">
+                  {isLoading ? "Creating account..." : "Create account"}
+                </Button>
 
                 <div className="text-center text-sm">
                   Already have an account?{" "}
@@ -210,11 +210,6 @@ export function SignUpForm({
           </CardContent>
         </Card>
       )}
-      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-        By creating an account, you agree to our{" "}
-        <Link href="/terms">Terms of Service</Link> and{" "}
-        <Link href="/privacy">Privacy Policy</Link>.
-      </div>
     </div>
   );
 }

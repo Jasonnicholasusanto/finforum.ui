@@ -1,3 +1,4 @@
+import { CopyrightFooter } from "@/components/copyright-footer";
 import { SignUpForm } from "@/components/signup-form";
 import Link from "next/link";
 
@@ -12,6 +13,7 @@ export default function SignUpPage() {
           Finforum
         </Link>
         <SignUpForm />
+        <CopyrightFooter />
       </div>
     </div>
   );
