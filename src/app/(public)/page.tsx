@@ -13,8 +13,8 @@ export default function LandingPage() {
             Where finance meets community
           </h1>
           <p className="max-w-2xl text-balance text-muted-foreground">
-            Join lively discussions, share insights, and explore analytics—warm,
-            welcoming, and built for modern investors.
+            Join lively discussions, share insights, and explore analytics. An
+            app built for modern investors.
           </p>
           <div className="mt-2">
             <Button asChild size="lg" variant="glass">

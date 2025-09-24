@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import StartupReveal from "@/components/animations/start-up-reveal";
-import { workSans, jetMono } from "@/lib/fonts";
+import { plusJakartaSans, jetMono } from "@/lib/fonts";
 import "../styles/globals.css";
 
 export default async function RootLayout({
@@ -15,7 +15,7 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${workSans.variable} ${jetMono.variable}`}
+      className={`${plusJakartaSans.variable} ${jetMono.variable}`}
     >
       <body suppressHydrationWarning className="antialiased font-sans">
         {!hasSeenIntro && <StartupReveal oncePerSession />}{" "}

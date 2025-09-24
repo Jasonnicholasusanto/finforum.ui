@@ -131,7 +131,7 @@ export function SignUpForm({
             <form onSubmit={handleSignUp}>
               <div className="grid gap-6">
                 <div className="flex flex-col gap-4">
-                  <Button variant="outline" className="w-full">
+                  <Button disabled variant="outline" className="w-full">
                     <FaGoogle />
                     Sign up with Google
                   </Button>
