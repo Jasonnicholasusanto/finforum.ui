@@ -15,26 +15,27 @@
 } */
 
 /* Tokens */
-/* :root {
-  --color-bg1: rgb(203, 229, 248);
-  --color-bg2: rgb(242, 250, 246);
-  --color1: 20, 184, 166;
-  --color2: 110, 231, 183;
-  --color3: 59, 130, 246;
-  --color4: 251, 191, 36;
-  --color5: 245, 158, 11;
-  --color-interactive: 56, 189, 248;
-  --circle-size: 85%;
-  --blending: multiply;
-} */
 
-:root {
+/* :root {
   --color-bg1: rgb(13, 35, 52);
   --color-bg2: rgb(8, 20, 18);
   --color1: 13, 148, 136;
   --color2: 45, 212, 191;
   --color3: 3, 105, 161;
   --color4: 234, 179, 8;
+  --color5: 180, 83, 9;
+  --color-interactive: 56, 189, 248;
+  --circle-size: 85%;
+  --blending: hard-light;
+} */
+
+:root {
+  --color-bg1: rgb(9, 14, 30);
+  --color-bg2: rgb(15, 25, 45);
+  --color1: 3, 105, 161;
+  --color2: 14, 165, 233;
+  --color3: 45, 212, 191;
+  --color4: 250, 204, 21;
   --color5: 180, 83, 9;
   --color-interactive: 56, 189, 248;
   --circle-size: 85%;

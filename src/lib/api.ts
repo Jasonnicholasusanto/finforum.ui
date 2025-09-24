@@ -4,7 +4,6 @@ export async function apiFetch<T>(
 ): Promise<T> {
   const baseUrl = process.env.FINFORUM_API_URL!;
   const url = `${baseUrl}${path}`;
-  console.log("API Fetching:", url);
 
   // By default, include credentials if your API uses cookies
   const res = await fetch(url, {
