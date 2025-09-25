@@ -16,7 +16,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { motion } from "motion/react";
 import { MotionButton } from "./ui/motion-button";
 
 export function LoginForm({

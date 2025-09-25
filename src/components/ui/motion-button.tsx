@@ -54,8 +54,10 @@ function MotionButton({
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
   }) {
+  const Comp = asChild ? motion(Slot) : motion.button;
+
   return (
-    <motion.button
+    <Comp
       data-slot="button"
       className={cn(
         buttonVariants({ variant, size, className }),
