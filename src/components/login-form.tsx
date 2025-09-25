@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { MotionButton } from "./ui/motion-button";
 
 export function LoginForm({
   className,
@@ -38,12 +39,14 @@ export function LoginForm({
         email,
         password,
       });
+      console.log("Attempting to log in");
       if (error) throw error;
-      // Update this route to redirect to an authenticated route. The user already has an active session.
       router.push("/dashboard");
+      console.log("Login successful");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
+      console.log("Login attempt finished");
       setIsLoading(false);
     }
   };
@@ -120,13 +123,18 @@ export function LoginForm({
                     type="password"
                     required
                     value={password}
+                    placeholder="********"
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
                 {error && <p className="text-sm text-red-500">{error}</p>}
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <MotionButton
+                  type="submit"
+                  className="w-full"
+                  disabled={isLoading}
+                >
                   {isLoading ? "Logging in..." : "Login"}
-                </Button>
+                </MotionButton>
               </div>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}

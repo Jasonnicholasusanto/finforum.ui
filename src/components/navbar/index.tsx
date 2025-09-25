@@ -23,6 +23,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { MdOutlineLogout, MdOutlineSettings } from "react-icons/md";
 import { Tooltip } from "@radix-ui/react-tooltip";
 import { TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { logout } from "@/services/logout";
 
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   user?: User | null;
@@ -62,6 +63,10 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
     ref
   ) => {
     const id = useId();
+
+    async function handleLogout() {
+      await logout();
+    }
 
     return (
       <header
@@ -103,7 +108,7 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
             <DropdownMenu>
               <DropdownMenuTrigger className="rounded-full flex items-center justify-center border-4 border-transparent hover:border-accent transition-colors">
                 <Tooltip delayDuration={500}>
-                  <TooltipTrigger>
+                  <TooltipTrigger asChild>
                     <Avatar className="w-10 h-10">
                       <AvatarImage src="" />
                       <AvatarFallback className="flex items-center justify-center bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-400">
@@ -141,7 +146,12 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                   <span>Settings</span>
                 </DropdownMenuItem>
 
-                <DropdownMenuItem className="text-sm flex items-center gap-2">
+                <DropdownMenuItem
+                  className="text-sm flex items-center gap-2"
+                  onClick={() => {
+                    handleLogout();
+                  }}
+                >
                   <MdOutlineLogout className="h-4 w-4" />
                   <span>Log Out</span>
                 </DropdownMenuItem>
