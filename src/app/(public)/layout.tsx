@@ -15,21 +15,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        suppressHydrationWarning
-        className={`dark [color-scheme:dark] antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          forcedTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <GradientBg />
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <ThemeProvider
+      attribute="class"
+      forcedTheme="dark"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <GradientBg />
+      {children}
+    </ThemeProvider>
   );
 }
