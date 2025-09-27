@@ -1,6 +1,6 @@
 import { CopyrightFooter } from "@/components/copyright-footer";
-import { UpdatePasswordForm } from "@/components/update-password-form";
 import Link from "next/link";
+import { UpdatePasswordForm } from "./update-password-form";
 
 export default function Page() {
   return (

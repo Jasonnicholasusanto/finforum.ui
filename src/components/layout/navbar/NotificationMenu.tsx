@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { BellIcon } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,8 +10,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Badge } from "../ui/badge";
+} from "../../ui/dropdown-menu";
+import { Badge } from "../../ui/badge";
 
 export interface NotificationMenuProps {
   notifications?: Array<{

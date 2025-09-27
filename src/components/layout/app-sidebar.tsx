@@ -16,7 +16,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { SidebarLogo } from "./ui/sidebar-logo";
+import { SidebarLogo } from "../ui/sidebar-logo";
 import { usePathname } from "next/navigation"; // ✅ get current path
 import { cn } from "@/lib/utils"; // ✅ merge Tailwind classes
 

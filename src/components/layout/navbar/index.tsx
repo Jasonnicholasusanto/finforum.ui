@@ -1,32 +1,33 @@
 "use client";
 
 import * as React from "react";
-import { useId } from "react";
+import { use, useId } from "react";
 import { SearchIcon } from "lucide-react";
 import InfoMenu from "./InfoMenu";
 import NotificationMenu from "./NotificationMenu";
 import SettingsMenu from "./SettingsMenu";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 import { cn } from "@/lib/utils";
-import { ModeToggle } from "../ui/mode-theme-button";
-import { Separator } from "../ui/separator";
+import { ModeToggle } from "../../ui/mode-theme-button";
+import { Separator } from "../../ui/separator";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { User } from "@/models/user";
+} from "../../ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import { FaUserCircle } from "react-icons/fa";
 import { MdOutlineLogout, MdOutlineSettings } from "react-icons/md";
 import { Tooltip } from "@radix-ui/react-tooltip";
-import { TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { TooltipContent, TooltipTrigger } from "../../ui/tooltip";
 import { logout } from "@/services/logout";
+import { redirect } from "next/navigation";
+import { useAppContext } from "@/contexts/app-context-provider";
+import { User } from "@/models/user";
 
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
-  user?: User | null;
   searchPlaceholder?: string;
   searchValue?: string;
   notifications?: Array<{
@@ -49,7 +50,6 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
     {
       className,
       searchPlaceholder = "Search stocks, posts, users...",
-      user,
       searchValue,
       notifications,
       onSearchChange,
@@ -64,8 +64,13 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
   ) => {
     const id = useId();
 
+    const { userPromise } = useAppContext();
+    const rawUser = use(userPromise);
+    const user = rawUser ? User.fromJSON(rawUser) : null;
+
     async function handleLogout() {
       await logout();
+      redirect("/auth/login");
     }
 
     return (

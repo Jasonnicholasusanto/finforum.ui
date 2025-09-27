@@ -1,5 +1,5 @@
 import { CopyrightFooter } from "@/components/copyright-footer";
-import { SignUpForm } from "@/components/signup-form";
+import { SignUpForm } from "@/app/(public)/auth/sign-up/signup-form";
 import Link from "next/link";
 
 export default function SignUpPage() {

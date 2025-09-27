@@ -44,6 +44,10 @@ export class User {
     return new User(json.profile, json.activity);
   }
 
+  get userFirstName(): string {
+    return this.profile.full_name.split(" ")[0];
+  }
+
   get displayName(): string {
     if (this.profile.display_name) {
       return this.profile.display_name;
