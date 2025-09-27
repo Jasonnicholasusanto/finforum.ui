@@ -2,7 +2,6 @@
 
 import BlurText from "@/components/blur-text";
 import Navbar from "@/components/layout/navbar";
-import { Button } from "@/components/ui/button";
 import { MotionButton } from "@/components/ui/motion-button";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
@@ -43,14 +42,8 @@ export default function LandingPage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden padding-top-14">
-      <motion.div
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
-      >
-        <Navbar />
-      </motion.div>
-      <section className="relative z-10 mx-auto flex min-h-[calc(100dvh-3.5rem)] max-w-4xl flex-col items-center justify-center gap-8 px-4 text-center">
+      <Navbar />
+      <section className="mt-16 relative z-10 mx-auto flex min-h-[calc(100dvh-3.5rem)] max-w-4xl flex-col items-center justify-center gap-8 px-4 text-center">
         <AnimatePresence mode="wait">
           <BlurText
             key={slogans[index]}
