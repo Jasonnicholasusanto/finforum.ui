@@ -1,8 +1,9 @@
 "use client";
 
+import { User } from "@/models/user";
 import { motion } from "motion/react";
 
-export default function StocksPage() {
+export default function StocksPage({ user }: { user: User | null }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}

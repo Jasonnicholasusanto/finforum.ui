@@ -1,8 +1,9 @@
 "use client";
 
+import { User } from "@/models/user";
 import { motion } from "motion/react";
 
-export default function AnalyticsPage() {
+export default function AnalyticsPage({ user }: { user: User | null }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}

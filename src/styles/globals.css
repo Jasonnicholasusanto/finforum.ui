@@ -4,6 +4,18 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --color-finforum-50: #eefffb;
+  --color-finforum-100: #c6fff6;
+  --color-finforum-200: #8effee;
+  --color-finforum-300: #4dfbe5;
+  --color-finforum-400: #19e8d4;
+  --color-finforum-500: #00c4b4;
+  --color-finforum-600: #00a49b;
+  --color-finforum-700: #02837d;
+  --color-finforum-800: #086764;
+  --color-finforum-900: #0c5552;
+  --color-finforum-950: #003434;
+
   --radius: 0.625rem;
 
   /* Backgrounds */
@@ -63,6 +75,18 @@
 }
 
 .dark {
+  --color-finforum-50: #eefffb;
+  --color-finforum-100: #c6fff6;
+  --color-finforum-200: #8effee;
+  --color-finforum-300: #4dfbe5;
+  --color-finforum-400: #19e8d4;
+  --color-finforum-500: #00c4b4;
+  --color-finforum-600: #00a49b;
+  --color-finforum-700: #02837d;
+  --color-finforum-800: #086764;
+  --color-finforum-900: #0c5552;
+  --color-finforum-950: #003434;
+
   --background: oklch(0.2109 0.0313 267.04); /* rgb(13, 35, 52) deep navy */
   --foreground: oklch(1 0 0); /* #ffffff */
 

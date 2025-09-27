@@ -1,5 +1,5 @@
 import { CopyrightFooter } from "@/components/copyright-footer";
-import { ForgotPasswordForm } from "@/components/forgot-password-form";
+import { ForgotPasswordForm } from "@/app/(public)/auth/forgot-password/forgot-password-form";
 
 export default function Page() {
   return (
