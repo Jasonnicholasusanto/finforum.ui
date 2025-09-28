@@ -13,42 +13,57 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FaGoogle } from "react-icons/fa";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { MotionButton } from "@/components/ui/motion-button";
 import { motion } from "motion/react";
+import { useFormStatus } from "react-dom";
+import { loginAction, loginGoogle, LoginState } from "@/services/authActions";
+import { useActionState } from "react";
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <MotionButton
+      type="submit"
+      className="w-full"
+      variant={pending ? "loading" : "default"}
+    >
+      Login
+    </MotionButton>
+  );
+}
+
+function LoginGoogleButton() {
+  async function handleGoogleLogin() {
+    const res = await loginGoogle();
+    if (res?.url) {
+      window.location.href = res.url;
+    } else if (res?.error) {
+      console.error(res.error);
+      alert("Google login failed: " + res.error);
+    }
+  }
+
+  return (
+    <MotionButton
+      variant="secondary"
+      className="w-full"
+      onClick={handleGoogleLogin}
+    >
+      <FaGoogle />
+      Login with Google
+    </MotionButton>
+  );
+}
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const supabase = createClient();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
-    } finally {
-      setIsLoading(false);
-    }
-
-    redirect("/dashboard");
-  };
-
+  const [state, formAction] = useActionState<LoginState, FormData>(
+    loginAction,
+    { error: null }
+  );
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -85,13 +100,10 @@ export function LoginForm({
             <CardDescription>Login with your Google account</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleLogin}>
+            <form action={formAction}>
               <div className="grid gap-6">
                 <div className="flex flex-col gap-4">
-                  <Button disabled variant="outline" className="w-full">
-                    <FaGoogle />
-                    Login with Google
-                  </Button>
+                  <LoginGoogleButton />
                 </div>
                 <div className="relative text-center text-sm flex items-center">
                   <div className="flex-grow border-t border-muted-foreground"></div>
@@ -106,10 +118,9 @@ export function LoginForm({
                     <Input
                       id="email"
                       type="email"
+                      name="email"
                       placeholder="someone@example.com"
                       required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="grid gap-3">
@@ -125,20 +136,17 @@ export function LoginForm({
                     <Input
                       id="password"
                       type="password"
+                      name="password"
                       required
-                      value={password}
                       placeholder="********"
-                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
-                  {error && <p className="text-sm text-red-500">{error}</p>}
-                  <MotionButton
-                    type="submit"
-                    className="w-full"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? "Logging in..." : "Login"}
-                  </MotionButton>
+                  {state.error && (
+                    <p className="text-sm text-red-500 text-center">
+                      {state.error}
+                    </p>
+                  )}
+                  <SubmitButton />
                 </div>
                 <div className="text-center text-sm">
                   Don&apos;t have an account?{" "}

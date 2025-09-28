@@ -18,6 +18,31 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { MotionButton } from "@/components/ui/motion-button";
 import { motion } from "motion/react";
+import { loginGoogle } from "@/services/authActions";
+
+function SignUpGoogleButton() {
+  async function handleGoogleLogin() {
+    const res = await loginGoogle();
+    if (res?.url) {
+      window.location.href = res.url;
+    } else if (res?.error) {
+      console.error(res.error);
+      alert("Google login failed: " + res.error);
+    }
+  }
+
+  return (
+    <MotionButton
+      variant="secondary"
+      className="w-full"
+      onClick={handleGoogleLogin}
+      type="button"
+    >
+      <FaGoogle />
+      Login with Google
+    </MotionButton>
+  );
+}
 
 export function SignUpForm({
   className,
@@ -139,10 +164,7 @@ export function SignUpForm({
               <form onSubmit={handleSignUp}>
                 <div className="grid gap-6">
                   <div className="flex flex-col gap-4">
-                    <Button disabled variant="outline" className="w-full">
-                      <FaGoogle />
-                      Sign up with Google
-                    </Button>
+                    <SignUpGoogleButton />
                   </div>
 
                   <div className="relative text-center text-sm flex items-center">
@@ -202,8 +224,12 @@ export function SignUpForm({
                   </div>
 
                   {error && <p className="text-sm text-red-500">{error}</p>}
-                  <MotionButton type="submit" className="w-full">
-                    {isLoading ? "Creating account..." : "Create account"}
+                  <MotionButton
+                    type="submit"
+                    className="w-full"
+                    variant={isLoading ? "loading" : "default"}
+                  >
+                    Create account
                   </MotionButton>
 
                   <div className="text-center text-sm">
