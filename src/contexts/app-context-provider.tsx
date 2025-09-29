@@ -20,7 +20,7 @@ export function AppContextProvider({
 }: {
   children: ReactNode;
   user: UserResponse | null;
-  authUser: any;
+  authUser: User;
 }) {
   const [user, setUser] = useState(initialUser);
   return (
