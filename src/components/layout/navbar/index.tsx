@@ -64,9 +64,8 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
   ) => {
     const id = useId();
 
-    const { userPromise } = useAppContext();
-    const rawUser = use(userPromise);
-    const user = rawUser ? User.fromJSON(rawUser) : null;
+    const { user } = useAppContext();
+    const parsedUser = user ? User.fromJSON(user) : null;
 
     async function handleLogout() {
       await logout();
@@ -130,14 +129,16 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                 <DropdownMenuItem className="flex flex-col items-start gap-1">
                   <div className="flex items-center gap-3">
                     <Avatar className="w-10 h-10">
-                      <AvatarImage src={user?.profile?.profile_picture || ""} />
+                      <AvatarImage
+                        src={parsedUser?.profile?.profile_picture || ""}
+                      />
                       <AvatarFallback className="flex items-center justify-center bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-300">
                         <FaUserCircle className="size-8" />
                       </AvatarFallback>
                     </Avatar>
                     <div>
                       <p className="text-md font-bold">
-                        {user?.profile?.username}
+                        {parsedUser?.profile?.username}
                       </p>
                       <span className="text-xs text-muted-foreground">
                         View Profile

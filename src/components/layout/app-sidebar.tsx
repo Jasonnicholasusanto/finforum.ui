@@ -17,8 +17,8 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { SidebarLogo } from "../ui/sidebar-logo";
-import { usePathname } from "next/navigation"; // ✅ get current path
-import { cn } from "@/lib/utils"; // ✅ merge Tailwind classes
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const sidebarContents = [
   { label: "Dashboard", url: "/dashboard", icon: LuHouse },
@@ -47,7 +47,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupContent>
             <SidebarMenu className="gap-3">
               {sidebarContents.map((item) => {
-                const isActive = mounted && pathname.startsWith(item.url); // check match
+                const isActive = mounted && pathname.startsWith(item.url);
                 return (
                   <SidebarMenuItem key={item.label}>
                     <SidebarMenuButton asChild>

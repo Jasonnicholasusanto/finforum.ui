@@ -1,5 +1,6 @@
 import { CopyrightFooter } from "@/components/copyright-footer";
 import Link from "next/link";
+import Image from "next/image";
 import { LoginForm } from "./login-form";
 
 export default function LoginPage() {
@@ -10,7 +11,14 @@ export default function LoginPage() {
           href="/"
           className="flex items-center gap-2 self-center text-2xl font-extrabold"
         >
-          Finforum
+          <Image
+            src="/images/secondary-logo-dark.png"
+            alt="Finforum Secondary Logo Dark"
+            width={130}
+            height={130}
+            priority
+            className="hidden dark:block"
+          />
         </Link>
         <LoginForm />
         <CopyrightFooter />

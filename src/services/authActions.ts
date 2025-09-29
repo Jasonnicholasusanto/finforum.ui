@@ -1,0 +1,86 @@
+"use server";
+
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
+
+export interface LoginState {
+  error: string | null;
+}
+
+export async function loginGoogle() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: process.env.GOOGLE_OAUTH_REDIRECT_URL,
+      queryParams: {
+        access_type: "offline",
+        prompt: "consent",
+      },
+    },
+  });
+
+  if (error) {
+    console.error("Google login failed:", error.message);
+    return { error: error.message };
+  }
+
+  return { url: data?.url ?? null };
+}
+
+export async function loginAction(
+  prevState: LoginState,
+  formData: FormData
+): Promise<LoginState> {
+  const supabase = await createClient();
+  const data = {
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  };
+  const { error } = await supabase.auth.signInWithPassword(data);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  redirect("/dashboard");
+  return { error: null };
+}
+
+export async function logout() {
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error("Logout failed:", error.message);
+    return { error };
+  }
+}
+
+export async function signup(formData: FormData) {
+  const supabase = await createClient();
+  const data = {
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+    options: {
+      emailRedirectTo: `${window.location.origin}/dashboard`,
+    },
+  };
+  const { error } = await supabase.auth.signUp(data);
+  if (error) {
+    redirect("/error");
+  }
+  revalidatePath("/", "layout");
+  redirect("/");
+}
+
+export async function getSessionAction() {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getSession();
+  if (error || !data?.session) {
+    redirect("/auth/login");
+  }
+  return data.session ?? null;
+}

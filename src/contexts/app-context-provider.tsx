@@ -1,26 +1,30 @@
 "use client";
 
-import { createContext, useState, ReactNode } from "react";
+import { createContext, ReactNode, useState } from "react";
 import { UserResponse } from "@/models/user";
+import type { User } from "@supabase/supabase-js";
 import React from "react";
 
 interface AppContextType {
-  userPromise: Promise<UserResponse | null>;
+  user: UserResponse | null;
+  authUser: User | null;
+  setUser: (user: UserResponse | null) => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
 
 export function AppContextProvider({
   children,
-  userPromise,
+  user: initialUser,
+  authUser,
 }: {
   children: ReactNode;
-  userPromise: Promise<UserResponse | null>;
+  user: UserResponse | null;
+  authUser: User | null;
 }) {
+  const [user, setUser] = useState(initialUser);
   return (
-    <AppContext.Provider
-      value={{ userPromise: userPromise ?? Promise.resolve(null) }}
-    >
+    <AppContext.Provider value={{ user, authUser, setUser }}>
       {children}
     </AppContext.Provider>
   );

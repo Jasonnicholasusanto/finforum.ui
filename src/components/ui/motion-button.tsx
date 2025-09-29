@@ -6,6 +6,8 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 import { HTMLMotionProps, motion } from "motion/react";
+import { DotWave } from "ldrs/react";
+import "ldrs/react/DotWave.css";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -29,6 +31,8 @@ const buttonVariants = cva(
           "backdrop-blur-xl backdrop-saturate-150 shadow-sm " +
           "hover:bg-white/30 dark:hover:bg-white/30 supports-[backdrop-filter]:hover:bg-white/30 " +
           "focus-visible:ring-white/40 focus-visible:ring-offset-0",
+        loading:
+          "bg-primary text-primary-foreground shadow-xs opacity-70 cursor-not-allowed",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
@@ -49,29 +53,32 @@ function MotionButton({
   variant,
   size,
   asChild = false,
+  disabled,
   ...props
 }: HTMLMotionProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
   }) {
   const Comp = asChild ? motion(Slot) : motion.button;
+  const isLoading = variant === "loading";
 
   return (
     <Comp
       data-slot="button"
-      className={cn(
-        buttonVariants({ variant, size, className }),
-        "pointer-events-auto"
-      )}
+      disabled={disabled || isLoading}
+      className={cn(buttonVariants({ variant, size }), className)}
       initial={{ opacity: 1, scale: 1 }}
-      whileHover={{ opacity: 0.75 }}
-      whileTap={{ scale: 0.95 }}
+      animate={isLoading ? { opacity: 0.5 } : { opacity: 1 }}
+      whileHover={disabled || isLoading ? {} : { opacity: 0.75 }}
+      whileTap={disabled || isLoading ? {} : { scale: 0.95 }}
       transition={{
-        opacity: { duration: 0.5, ease: "easeInOut" },
+        opacity: { duration: 0.3, ease: "easeInOut" },
         scale: { type: "spring", stiffness: 300, damping: 20 },
       }}
       {...props}
-    />
+    >
+      {isLoading ? <DotWave size="25" speed="1" /> : props.children}
+    </Comp>
   );
 }
 

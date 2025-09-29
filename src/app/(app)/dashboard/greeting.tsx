@@ -6,9 +6,8 @@ import { Suspense, use } from "react";
 
 export function Greeting() {
   const hour = new Date().getHours();
-  const { userPromise } = useAppContext();
-  const rawUser = use(userPromise);
-  const user = rawUser ? User.fromJSON(rawUser) : null;
+  const { user } = useAppContext();
+  const userObj = user ? User.fromJSON(user) : null;
 
   let greeting = "";
 
@@ -23,7 +22,7 @@ export function Greeting() {
   return (
     <Suspense fallback={<h1 className="text-3xl font-bold">Loading...</h1>}>
       <h1 className="text-3xl font-bold">
-        {greeting} {user?.userFirstName}
+        {greeting} {userObj?.userFirstName}
       </h1>
     </Suspense>
   );
