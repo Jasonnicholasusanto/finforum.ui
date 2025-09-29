@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { OnboardingGate } from "./onboarding-gate";
+import { UserResponse } from "@/models/user";
 
 export function LayoutClient({
   children,
   user,
 }: {
   children: React.ReactNode;
-  user: any;
+  user: UserResponse | null;
 }) {
   const [showOnboarding, setShowOnboarding] = useState(user === null);
 
