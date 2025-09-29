@@ -5,6 +5,12 @@ import { createClient } from "@/lib/supabase/server";
 import { UserResponse } from "@/models/user";
 import { redirect } from "next/navigation";
 
+export async function getAuthUser() {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+  return data.user;
+}
+
 export async function getAccessToken() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getSession();

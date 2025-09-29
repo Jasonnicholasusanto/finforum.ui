@@ -7,6 +7,7 @@ export interface UserProfile {
   bio: string | null;
   profile_picture: string | null;
   background_picture: string | null;
+  email_address: string;
 }
 
 export interface UserActivity {

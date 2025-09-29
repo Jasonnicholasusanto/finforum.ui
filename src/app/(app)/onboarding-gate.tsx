@@ -18,13 +18,18 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { FormEvent, useState } from "react";
 import { LuCalendar } from "react-icons/lu";
-import { checkUsername, createProfile } from "@/services/onboardingActions";
+import { createProfile } from "@/services/onboardingActions";
+import { useAppContext } from "@/contexts/app-context-provider";
+import { MotionButton } from "@/components/ui/motion-button";
+import { getUserData } from "@/services/getUserDataActions";
 
-export function OnboardingGate() {
+export function OnboardingGate({ onComplete }: { onComplete: () => void }) {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { authUser, setUser } = useAppContext();
+  const authUserObj = authUser?.user_metadata;
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -35,20 +40,15 @@ export function OnboardingGate() {
     const full_name = form.get("full_name") as string;
     const username = form.get("username") as string;
     const dob = date?.toISOString().split("T")[0] ?? "";
+    const email_address = authUserObj?.email ?? "";
 
     try {
-      // 1) Check username availability
-      const res = await checkUsername(username);
-      if (!res.available) {
-        setError("That username is already taken.");
-        setLoading(false);
-        return;
-      }
+      await createProfile({ full_name, dob, username, email_address });
 
-      // 2) Create profile
-      await createProfile({ full_name, dob, username });
+      const freshUser = await getUserData();
+      setUser(freshUser);
 
-      window.location.reload();
+      onComplete();
     } catch (err: any) {
       setError(err.message || "Something went wrong.");
     } finally {
@@ -119,9 +119,14 @@ export function OnboardingGate() {
               {error && (
                 <p className="text-sm text-red-500 font-medium">{error}</p>
               )}
-              <Button type="submit" className="mt-2 w-full">
+              <MotionButton
+                type="submit"
+                className="mt-2 w-full"
+                variant={loading ? "loading" : "default"}
+                disabled={loading}
+              >
                 Save and continue
-              </Button>
+              </MotionButton>
             </div>
           </form>
         </CardContent>

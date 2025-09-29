@@ -7,26 +7,45 @@ export class ApiError extends Error {
   }
 }
 
+function getBaseUrl() {
+  if (process.env.FINFORUM_API_URL) {
+    return process.env.FINFORUM_API_URL;
+  }
+
+  return process.env.NEXT_PUBLIC_FINFORUM_API_URL!;
+}
+
 export async function apiFetch<T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const baseUrl = process.env.FINFORUM_API_URL!;
+  const baseUrl = process.env.NEXT_PUBLIC_FINFORUM_API_URL!;
   const url = `${baseUrl}${path}`;
 
-  // By default, include credentials if your API uses cookies
   const res = await fetch(url, {
     ...options,
     headers: {
       "Content-Type": "application/json",
       ...(options.headers || {}),
     },
-    credentials: "include", // needed if FastAPI sets cookies
+    credentials: "include",
   });
 
   if (!res.ok) {
-    const msg = await res.text();
-    throw new ApiError(msg || `Request failed`, res.status);
+    let message: string;
+
+    try {
+      const data = await res.json();
+      if (typeof data === "object" && data.detail) {
+        message = data.detail;
+      } else {
+        message = JSON.stringify(data);
+      }
+    } catch {
+      message = await res.text();
+    }
+
+    throw new ApiError(message, res.status);
   }
 
   return res.json();
