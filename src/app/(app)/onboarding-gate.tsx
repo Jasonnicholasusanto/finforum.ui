@@ -66,7 +66,7 @@ export function OnboardingGate({ onComplete }: { onComplete: () => void }) {
         <CardHeader>
           <CardTitle className="text-xl">Welcome to Finforum!</CardTitle>
           <CardDescription>
-            Let's set up your profile to get started.
+            Let&apos;s set up your profile to get started.
           </CardDescription>
         </CardHeader>
         <CardContent>
