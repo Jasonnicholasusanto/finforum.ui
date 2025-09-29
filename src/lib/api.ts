@@ -7,14 +7,6 @@ export class ApiError extends Error {
   }
 }
 
-function getBaseUrl() {
-  if (process.env.FINFORUM_API_URL) {
-    return process.env.FINFORUM_API_URL;
-  }
-
-  return process.env.NEXT_PUBLIC_FINFORUM_API_URL!;
-}
-
 export async function apiFetch<T>(
   path: string,
   options: RequestInit = {}
