@@ -1,6 +1,6 @@
 "use server";
 
-import { apiFetch } from "@/lib/api";
+import { ApiError, apiFetch } from "@/lib/api";
 import { createClient } from "@/lib/supabase/server";
 import { UserResponse } from "@/models/user";
 import { redirect } from "next/navigation";
@@ -28,8 +28,8 @@ export async function getUserData(): Promise<UserResponse | null> {
     return await apiFetch<UserResponse>("/api/v1/me/profile", {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-  } catch (e: any) {
-    if (e?.status === 404) {
+  } catch (e: unknown) {
+    if (e instanceof ApiError && e.status === 404) {
       return null;
     }
     throw e;

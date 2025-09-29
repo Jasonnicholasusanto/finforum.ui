@@ -2,11 +2,12 @@
 
 import { createContext, ReactNode, useState } from "react";
 import { UserResponse } from "@/models/user";
+import type { User } from "@supabase/supabase-js";
 import React from "react";
 
 interface AppContextType {
   user: UserResponse | null;
-  authUser: any;
+  authUser: User;
   setUser: (user: UserResponse | null) => void;
 }
 
