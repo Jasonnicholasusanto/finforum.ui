@@ -7,7 +7,7 @@ import React from "react";
 
 interface AppContextType {
   user: UserResponse | null;
-  authUser: User;
+  authUser: User | null;
   setUser: (user: UserResponse | null) => void;
 }
 
@@ -20,7 +20,7 @@ export function AppContextProvider({
 }: {
   children: ReactNode;
   user: UserResponse | null;
-  authUser: User;
+  authUser: User | null;
 }) {
   const [user, setUser] = useState(initialUser);
   return (
