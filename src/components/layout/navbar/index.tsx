@@ -26,6 +26,7 @@ import { logout } from "@/services/logout";
 import { redirect } from "next/navigation";
 import { useAppContext } from "@/contexts/app-context-provider";
 import { User } from "@/models/user";
+import Link from "next/link";
 
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   searchPlaceholder?: string;
@@ -127,24 +128,30 @@ export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
               </DropdownMenuTrigger>
               <DropdownMenuContent className="flex flex-col min-w-3xs p-3 gap-2">
                 <DropdownMenuItem className="flex flex-col items-start gap-1">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="w-10 h-10">
-                      <AvatarImage
-                        src={parsedUser?.profile?.profile_picture || ""}
-                      />
-                      <AvatarFallback className="flex items-center justify-center bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-300">
-                        <FaUserCircle className="size-8" />
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-md font-bold">
-                        {parsedUser?.profile?.username}
-                      </p>
-                      <span className="text-xs text-muted-foreground">
-                        View Profile
-                      </span>
+                  <Link
+                    href={`/trader/${parsedUser?.profile.username}`}
+                    prefetch
+                  >
+                    <div className="flex items-center gap-3">
+                      <Avatar className="w-10 h-10 cursor-pointer hover:opacity-80 transition">
+                        <AvatarImage
+                          src={parsedUser?.profile?.profile_picture || ""}
+                        />
+                        <AvatarFallback className="flex items-center justify-center bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-300">
+                          <FaUserCircle className="size-8" />
+                        </AvatarFallback>
+                      </Avatar>
+
+                      <div>
+                        <p className="text-md font-bold">
+                          {parsedUser?.profile?.username}
+                        </p>
+                        <span className="text-xs text-muted-foreground">
+                          View Profile
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="text-sm flex items-center gap-2">

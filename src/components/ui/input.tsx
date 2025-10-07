@@ -9,10 +9,9 @@ function Input({
   id,
   ...props
 }: React.ComponentProps<"input">) {
-  const generatedId = useId();
   return (
     <input
-      id={id ?? generatedId}
+      id={id}
       type={type}
       data-slot="input"
       className={cn(

@@ -7,55 +7,43 @@ export interface UserProfile {
   bio: string | null;
   profile_picture: string | null;
   background_picture: string | null;
-  email_address: string;
 }
 
-export interface UserActivity {
-  topics_created: number;
-  entries_created: number;
-  comments_created: number;
-  topic_upvotes: number;
-  topic_downvotes: number;
-  entry_upvotes: number;
-  entry_downvotes: number;
-  comment_upvotes: number;
-  comment_downvotes: number;
+export interface UserActivityPointsBreakdown {
   total_points: number;
   weekly_points: number;
   monthly_points: number;
-  user_id: string;
-  updated_at: string;
 }
 
-export interface UserResponse {
+export interface UserPublicResponse {
   profile: UserProfile;
-  activity: UserActivity;
+  activityPointsBreakdown: UserActivityPointsBreakdown;
   followers_count: number;
   following_count: number;
 }
 
-export class User {
+export class PublicUser {
   profile: UserProfile;
-  activity: UserActivity;
+  activityPointsBreakdown: UserActivityPointsBreakdown;
   followers_count: number;
   following_count: number;
 
   constructor(
     profile: UserProfile,
-    activity: UserActivity,
+    activity: UserActivityPointsBreakdown,
     followers_count: number,
     following_count: number
   ) {
     this.profile = profile;
-    this.activity = activity;
+    this.activityPointsBreakdown = activity;
     this.followers_count = followers_count;
     this.following_count = following_count;
   }
 
-  static fromJSON(json: UserResponse): User {
-    return new User(
+  static fromJSON(json: UserPublicResponse): PublicUser {
+    return new PublicUser(
       json.profile,
-      json.activity,
+      json.activityPointsBreakdown,
       json.followers_count,
       json.following_count
     );
@@ -73,7 +61,7 @@ export class User {
   }
 
   get totalPoints(): number {
-    return this.activity.total_points;
+    return this.activityPointsBreakdown.total_points;
   }
 
   get avatar(): string | null {

@@ -23,22 +23,44 @@ export async function apiFetch<T>(
     credentials: "include",
   });
 
-  if (!res.ok) {
-    let message: string;
+  const rawBody = await res.text();
 
-    try {
-      const data = await res.json();
-      if (typeof data === "object" && data.detail) {
-        message = data.detail;
-      } else {
-        message = JSON.stringify(data);
-      }
-    } catch {
-      message = await res.text();
-    }
+  // if (!res.ok) {
+  //   let message: string;
+
+  //   try {
+  //     const data = await res.json();
+  //     if (typeof data === "object" && data.detail) {
+  //       message = data.detail;
+  //     } else {
+  //       message = JSON.stringify(data);
+  //     }
+  //   } catch {
+  //     message = await res.text();
+  //   }
+
+  //   throw new ApiError(message, res.status);
+  // }
+
+  // return res.json();
+
+  let parsedBody: any;
+  try {
+    parsedBody = rawBody ? JSON.parse(rawBody) : {};
+  } catch {
+    parsedBody = rawBody;
+  }
+
+  if (!res.ok) {
+    const message =
+      (parsedBody && (parsedBody.detail || parsedBody.error)) ||
+      (typeof parsedBody === "string"
+        ? parsedBody
+        : JSON.stringify(parsedBody)) ||
+      `Request failed with status ${res.status}`;
 
     throw new ApiError(message, res.status);
   }
 
-  return res.json();
+  return parsedBody as T;
 }
