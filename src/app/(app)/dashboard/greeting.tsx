@@ -11,9 +11,9 @@ export function Greeting() {
 
   let greeting = "";
 
-  if (hour < 12) {
+  if (hour < 12 && hour >= 5) {
     greeting = "Good morning";
-  } else if (hour < 18) {
+  } else if (hour < 18 && hour >= 12) {
     greeting = "Good afternoon";
   } else {
     greeting = "Good evening";

@@ -1,6 +1,6 @@
 import { getUserDataByUsername } from "@/services/getUserDataActions";
 import { notFound } from "next/navigation";
-import TraderComponent from "./trader-component";
+import TraderComponent from "./components/trader-component";
 
 export default async function TraderPage({
   params,

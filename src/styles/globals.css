@@ -39,10 +39,12 @@
 
   /* Muted / Neutral */
   --muted: oklch(0.95 0.004 250);
-  --muted-foreground: oklch(0.6 0.03 250);
+  --muted-foreground: oklch(49.739% 0.0276 250.374);
 
   /* Accent (sky blue highlight) */
-  --accent: oklch(0.92 0.004 250); /* light gray with slight blue tint */
+  --accent: oklch(
+    93.911% 0.00355 248.548
+  ); /* light gray with slight blue tint */
   --accent-foreground: oklch(0.25 0.02 250); /* dark slate gray for contrast */
 
   /* Destructive (red for alerts, not charts) */
@@ -87,10 +89,12 @@
   --color-finforum-900: #0c5552;
   --color-finforum-950: #003434;
 
+  --radius: 0.625rem;
+
   --background: oklch(0.2109 0.0313 267.04); /* rgb(13, 35, 52) deep navy */
   --foreground: oklch(1 0 0); /* #ffffff */
 
-  --card: oklch(1 0 0 / 5%); /* rgba(255,255,255,0.05) */
+  --card: oklch(0.2408 0.0302 267.33); /* rgba(255,255,255,0.05) */
   --card-foreground: oklch(1 0 0); /* #ffffff */
 
   --popover: oklch(0.32 0.04 250); /* navy slate, subtle frosted effect */
@@ -105,7 +109,7 @@
   --muted: oklch(1 0 0 / 5%); /* rgba(255,255,255,0.05) */
   --muted-foreground: oklch(0.74 0.02 250); /* rgba(255,255,255,0.7) */
 
-  --accent: oklch(100% 0.00011 271.152 / 0.3);
+  --accent: oklch(1 0 0 / 5%);
   --accent-foreground: oklch(100% 0.00011 271.152);
 
   --destructive: oklch(0.65 0.23 27); /* #ff4757 red */

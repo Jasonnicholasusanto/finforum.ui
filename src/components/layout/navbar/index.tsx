@@ -1,15 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { use, useId } from "react";
-import { SearchIcon } from "lucide-react";
-import InfoMenu from "./InfoMenu";
-import NotificationMenu from "./NotificationMenu";
-import SettingsMenu from "./SettingsMenu";
-import { Input } from "../../ui/input";
-import { cn } from "@/lib/utils";
-import { ModeToggle } from "../../ui/mode-theme-button";
-import { Separator } from "../../ui/separator";
+import Image from "next/image";
+import Link from "next/link";
+import { useId } from "react";
+import { FaUserCircle } from "react-icons/fa";
+import { MdOutlineLogout, MdOutlineSettings } from "react-icons/md";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,165 +14,156 @@ import {
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
-import { FaUserCircle } from "react-icons/fa";
-import { MdOutlineLogout, MdOutlineSettings } from "react-icons/md";
-import { Tooltip } from "@radix-ui/react-tooltip";
-import { TooltipContent, TooltipTrigger } from "../../ui/tooltip";
+import { Separator } from "../../ui/separator";
+import { ModeToggle } from "../../ui/mode-theme-button";
+import { Tooltip, TooltipTrigger, TooltipContent } from "../../ui/tooltip";
+import { cn } from "@/lib/utils";
 import { logout } from "@/services/logout";
 import { redirect } from "next/navigation";
 import { useAppContext } from "@/contexts/app-context-provider";
 import { User } from "@/models/user";
-import Link from "next/link";
+import { ExpandableSearch } from "@/components/layout/navbar/expandable-search";
+import SettingsMenu from "./SettingsMenu";
+import { NavbarRoute } from "@/models/navbarRoute";
+import NavbarMenu from "./navbarMenu";
 
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   searchPlaceholder?: string;
   searchValue?: string;
-  notifications?: Array<{
-    id: string;
-    title: string;
-    message: string;
-    time: string;
-    unread?: boolean;
-  }>;
   onSearchChange?: (value: string) => void;
-  onLayoutClick?: () => void;
-  onAddClick?: () => void;
-  onInfoItemClick?: (item: string) => void;
-  onNotificationClick?: (notificationId: string) => void;
   onSettingsItemClick?: (item: string) => void;
+  navbarItems?: NavbarRoute[] | null;
 }
 
-export const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
-  (
-    {
-      className,
-      searchPlaceholder = "Search stocks, posts, users...",
-      searchValue,
-      notifications,
-      onSearchChange,
-      onLayoutClick,
-      onAddClick,
-      onInfoItemClick,
-      onNotificationClick,
-      onSettingsItemClick,
-      ...props
-    },
-    ref
-  ) => {
-    const id = useId();
+export function Navbar({
+  className,
+  searchPlaceholder = "Search stocks, posts, users...",
+  searchValue,
+  onSearchChange,
+  onSettingsItemClick,
+  navbarItems,
+  ...props
+}: NavbarProps) {
+  const id = useId();
+  const { user } = useAppContext();
+  const parsedUser = user ? User.fromJSON(user) : null;
 
-    const { user } = useAppContext();
-    const parsedUser = user ? User.fromJSON(user) : null;
+  async function handleLogout() {
+    await logout();
+    redirect("/auth/login");
+  }
 
-    async function handleLogout() {
-      await logout();
-      redirect("/auth/login");
-    }
-
-    return (
-      <header
-        ref={ref}
-        className={cn(
-          "sticky top-0 z-50 h-16 px-4 md:px-6",
-          "backdrop-blur-md shadow-md bg-header border-b-1 border-b-border",
-          className
-        )}
-        {...props}
-      >
-        <div className="flex h-full items-center justify-between gap-4">
-          <div className="relative flex-1">
-            <Input
-              id={`input-${id}`}
-              className="peer h-8 w-full max-w-lg ps-8 pe-2"
-              placeholder={searchPlaceholder}
-              type="search"
-              value={searchValue}
-              onChange={(e) => onSearchChange?.(e.target.value)}
+  return (
+    <header
+      className={cn(
+        "sticky top-0 z-50 h-20 px-4 md:px-8 lg:px-12 2xl:px-16",
+        "backdrop-blur-md shadow-sm bg-header border-b border-border",
+        className
+      )}
+      {...props}
+    >
+      <div className="flex h-full items-center justify-between">
+        {/* ---------------- Left Side ---------------- */}
+        <div className="flex items-center gap-8">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/images/secondary-logo-light.png"
+              alt="Finforum Secondary Logo Light"
+              width={130}
+              height={40}
+              priority
+              className="block dark:hidden"
             />
-            <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 peer-disabled:opacity-50">
-              <SearchIcon size={16} />
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              {/* <NotificationMenu
-                notifications={notifications}
-                onNotificationClick={onNotificationClick}
-              /> */}
-              <SettingsMenu onItemClick={onSettingsItemClick} />
-              <ModeToggle />
-            </div>
-            <Separator
-              orientation="vertical"
-              className="mr-1 data-[orientation=vertical]:h-5"
+            <Image
+              src="/images/secondary-logo-dark.png"
+              alt="Finforum Secondary Logo Dark"
+              width={130}
+              height={40}
+              priority
+              className="hidden dark:block"
             />
-            <DropdownMenu>
-              <DropdownMenuTrigger className="rounded-full flex items-center justify-center border-4 border-transparent hover:border-accent transition-colors">
-                <Tooltip delayDuration={500}>
-                  <TooltipTrigger asChild>
-                    <Avatar className="w-10 h-10">
-                      <AvatarImage src="" />
-                      <AvatarFallback className="flex items-center justify-center bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-400">
+          </Link>
+
+          <NavbarMenu navbarItems={navbarItems || []} />
+        </div>
+
+        {/* ---------------- Right Side ---------------- */}
+        <div className="flex items-center gap-4">
+          <ExpandableSearch
+            id={`input-${id}`}
+            placeholder={searchPlaceholder}
+            value={searchValue}
+            onChange={onSearchChange}
+          />
+
+          <SettingsMenu onItemClick={onSettingsItemClick} />
+          <ModeToggle />
+
+          <Separator
+            orientation="vertical"
+            className="mr-1 data-[orientation=vertical]:h-5"
+          />
+
+          {/* User Avatar */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="rounded-full flex items-center justify-center border-4 border-transparent hover:border-accent transition-colors">
+              <Tooltip delayDuration={500}>
+                <TooltipTrigger asChild>
+                  <Avatar className="w-10 h-10">
+                    <AvatarImage
+                      src={parsedUser?.profile?.profile_picture || ""}
+                    />
+                    <AvatarFallback className="flex items-center justify-center bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-400">
+                      <FaUserCircle className="size-8" />
+                    </AvatarFallback>
+                  </Avatar>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="text-xs">
+                  Account settings and more
+                </TooltipContent>
+              </Tooltip>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent className="flex flex-col min-w-3xs p-3 gap-2">
+              <DropdownMenuItem className="flex flex-col items-start gap-1">
+                <Link href={`/trader/${parsedUser?.profile.username}`} prefetch>
+                  <div className="flex items-center gap-3">
+                    <Avatar className="w-10 h-10 cursor-pointer hover:opacity-80 transition">
+                      <AvatarImage
+                        src={parsedUser?.profile?.profile_picture || ""}
+                      />
+                      <AvatarFallback className="flex items-center justify-center bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-300">
                         <FaUserCircle className="size-8" />
                       </AvatarFallback>
                     </Avatar>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom" className="text-xs">
-                    Account settings and more
-                  </TooltipContent>
-                </Tooltip>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="flex flex-col min-w-3xs p-3 gap-2">
-                <DropdownMenuItem className="flex flex-col items-start gap-1">
-                  <Link
-                    href={`/trader/${parsedUser?.profile.username}`}
-                    prefetch
-                  >
-                    <div className="flex items-center gap-3">
-                      <Avatar className="w-10 h-10 cursor-pointer hover:opacity-80 transition">
-                        <AvatarImage
-                          src={parsedUser?.profile?.profile_picture || ""}
-                        />
-                        <AvatarFallback className="flex items-center justify-center bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-300">
-                          <FaUserCircle className="size-8" />
-                        </AvatarFallback>
-                      </Avatar>
-
-                      <div>
-                        <p className="text-md font-bold">
-                          {parsedUser?.profile?.username}
-                        </p>
-                        <span className="text-xs text-muted-foreground">
-                          View Profile
-                        </span>
-                      </div>
+                    <div>
+                      <p className="text-md font-bold">
+                        {parsedUser?.profile?.username}
+                      </p>
+                      <span className="text-xs text-muted-foreground">
+                        View Profile
+                      </span>
                     </div>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-sm flex items-center gap-2">
-                  <MdOutlineSettings className="h-4 w-4" />
-                  <span>Settings</span>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  className="text-sm flex items-center gap-2"
-                  onClick={() => {
-                    handleLogout();
-                  }}
-                >
-                  <MdOutlineLogout className="h-4 w-4" />
-                  <span>Log Out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+                  </div>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-sm flex items-center gap-2">
+                <MdOutlineSettings className="h-4 w-4" />
+                <span>Settings</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-sm flex items-center gap-2"
+                onClick={handleLogout}
+              >
+                <MdOutlineLogout className="h-4 w-4" />
+                <span>Log Out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-      </header>
-    );
-  }
-);
-
-Navbar.displayName = "Navbar";
-
-export { InfoMenu, NotificationMenu, SettingsMenu };
+      </div>
+    </header>
+  );
+}

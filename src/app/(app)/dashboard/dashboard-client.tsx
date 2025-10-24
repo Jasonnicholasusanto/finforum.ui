@@ -11,7 +11,7 @@ export function DashboardClient() {
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <div className="grid grid-cols-12 md:grid-cols-6 gap-6">
+      <div className="mt-6 grid grid-cols-12 md:grid-cols-6 gap-6">
         <div className="col-span-12 flex flex-col md:flex-row justify-between items-start md:items-center">
           <Greeting />
         </div>
