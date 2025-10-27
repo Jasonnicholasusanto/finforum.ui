@@ -91,10 +91,10 @@
 
   --radius: 0.625rem;
 
-  --background: oklch(0.2109 0.0313 267.04);
+  --background: oklch(0.175 0.02972 268.497);
   --foreground: oklch(1 0 0);
 
-  --card: oklch(0.2408 0.0302 267.33);
+  --card: oklch(0.2 0.0374 268.89);
   --card-foreground: oklch(1 0 0);
 
   --popover: oklch(0.32 0.04 250);
@@ -137,7 +137,7 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.7373 0.1302 184.56);
 
-  --header: oklch(0.2408 0.0302 267.33 / 65%);
+  --header: oklch(21.705% 0.03901 267.754 / 0.65);
 }
 
 @theme inline {

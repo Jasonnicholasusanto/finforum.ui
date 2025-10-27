@@ -123,67 +123,7 @@ export default function TraderComponent({
             </TabsTrigger>
           </TabsList>
           <TabsContent value="watchlists">
-            Your public watchlists will be shown here. Your public watchlists
-            will be shown here. Your public watchlists will be shown here. Your
-            public watchlists will be shown here. Your public watchlists will be
-            shown here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here. Your public watchlists will be shown
-            here. Your public watchlists will be shown here. Your public
-            watchlists will be shown here. Your public watchlists will be shown
-            here. Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here. Your public watchlists will be shown here. Your public
-            watchlists will be shown here. Your public watchlists will be shown
-            here. Your public watchlists will be shown here. Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here. Your public
-            watchlists will be shown here. Your public watchlists will be shown
-            here. Your public watchlists will be shown here. Your public
-            watchlists will be shown here. Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here. Your public watchlists will be shown
-            here. Your public watchlists will be shown here. Your public
-            watchlists will be shown here. Your public watchlists will be shown
-            here. Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here. Your public
-            watchlists will be shown here. Your public watchlists will be shown
-            here. Your public watchlists will be shown here. Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here. Your public watchlists will be shown
-            here. Your public watchlists will be shown here. Your public
-            watchlists will be shown here. Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.Your public watchlists will be shown
-            here.Your public watchlists will be shown here.Your public
-            watchlists will be shown here.
+            Your public watchlists will be shown here.
           </TabsContent>
           <TabsContent value="topics">Your topics.</TabsContent>
           <TabsContent value="entries">Your entries.</TabsContent>

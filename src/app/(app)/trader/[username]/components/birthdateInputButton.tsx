@@ -2,11 +2,9 @@
 
 import * as React from "react";
 import { useFormikContext } from "formik";
-import { ChevronDownIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -70,13 +68,6 @@ export const BirthDateInput = React.forwardRef<
           />
         </PopoverContent>
       </Popover>
-
-      {/* Optional error display */}
-      {formik?.touched?.[name] && formik?.errors?.[name] && (
-        <p className="text-xs text-destructive">
-          {formik.errors[name] as string}
-        </p>
-      )}
     </div>
   );
 });
