@@ -8,9 +8,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUserCircle } from "react-icons/fa";
 import { Card } from "@/components/ui/card";
 import { LuPencil } from "react-icons/lu";
-import { MotionButton } from "@/components/ui/motion-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
+import EditProfileModal from "./updateProfileModal";
+import { Button } from "@/components/ui/button";
 
 export default function TraderComponent({
   profile,
@@ -36,13 +37,13 @@ export default function TraderComponent({
             className="object-cover"
           />
           {isOwner && (
-            <MotionButton
+            <Button
               variant="ghost"
               size="sm"
               className="absolute right-4 top-4 bg-black/30 hover:bg-black/40 text-white"
             >
               <LuPencil />
-            </MotionButton>
+            </Button>
           )}
         </div>
 
@@ -105,15 +106,7 @@ export default function TraderComponent({
               </p>
             )}
           </div>
-          {isOwner && (
-            <MotionButton
-              variant="default"
-              className="text-sm rounded-md px-4 py-2 transition"
-            >
-              <LuPencil />
-              Edit Profile
-            </MotionButton>
-          )}
+          {isOwner && <EditProfileModal />}
         </div>
       </div>
       <div className="px-8 mt-6">
@@ -134,6 +127,58 @@ export default function TraderComponent({
             will be shown here. Your public watchlists will be shown here. Your
             public watchlists will be shown here. Your public watchlists will be
             shown here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here. Your public watchlists will be shown
+            here. Your public watchlists will be shown here. Your public
+            watchlists will be shown here. Your public watchlists will be shown
+            here. Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here. Your public watchlists will be shown here. Your public
+            watchlists will be shown here. Your public watchlists will be shown
+            here. Your public watchlists will be shown here. Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here. Your public
+            watchlists will be shown here. Your public watchlists will be shown
+            here. Your public watchlists will be shown here. Your public
+            watchlists will be shown here. Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here. Your public watchlists will be shown
+            here. Your public watchlists will be shown here. Your public
+            watchlists will be shown here. Your public watchlists will be shown
+            here. Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here. Your public
+            watchlists will be shown here. Your public watchlists will be shown
+            here. Your public watchlists will be shown here. Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here.Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
+            watchlists will be shown here. Your public watchlists will be shown
+            here. Your public watchlists will be shown here. Your public
+            watchlists will be shown here. Your public watchlists will be shown
+            here.Your public watchlists will be shown here.Your public
             watchlists will be shown here.Your public watchlists will be shown
             here.Your public watchlists will be shown here.Your public
             watchlists will be shown here.Your public watchlists will be shown

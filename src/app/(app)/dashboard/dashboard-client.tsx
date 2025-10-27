@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Greeting } from "@/app/(app)/dashboard/greeting";
+import { Greeting } from "@/app/(app)/dashboard/components/greeting";
 import { Card } from "@/components/ui/card";
 
 export function DashboardClient() {

@@ -5,9 +5,20 @@ export interface UserProfile {
   full_name: string;
   display_name: string | null;
   bio: string | null;
+  birth_date: string | null;
+  phone_number: string | null;
   profile_picture: string | null;
   background_picture: string | null;
   email_address: string;
+}
+
+export interface UpdateUserProfilePayload {
+  username?: string;
+  full_name?: string;
+  display_name?: string;
+  bio?: string;
+  birth_date?: string;
+  phone_number?: string;
 }
 
 export interface UserActivity {

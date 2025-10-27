@@ -18,7 +18,7 @@ import { Separator } from "../../ui/separator";
 import { ModeToggle } from "../../ui/mode-theme-button";
 import { Tooltip, TooltipTrigger, TooltipContent } from "../../ui/tooltip";
 import { cn } from "@/lib/utils";
-import { logout } from "@/services/logout";
+import { logout } from "@/services/authActions";
 import { redirect } from "next/navigation";
 import { useAppContext } from "@/contexts/app-context-provider";
 import { User } from "@/models/user";
@@ -127,7 +127,11 @@ export function Navbar({
 
             <DropdownMenuContent className="flex flex-col min-w-3xs p-3 gap-2">
               <DropdownMenuItem className="flex flex-col items-start gap-1">
-                <Link href={`/trader/${parsedUser?.profile.username}`} prefetch>
+                <Link
+                  href={`/trader/${parsedUser?.profile.username}`}
+                  prefetch
+                  className="w-full"
+                >
                   <div className="flex items-center gap-3">
                     <Avatar className="w-10 h-10 cursor-pointer hover:opacity-80 transition">
                       <AvatarImage

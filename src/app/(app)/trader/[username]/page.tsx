@@ -1,6 +1,6 @@
-import { getUserDataByUsername } from "@/services/getUserDataActions";
 import { notFound } from "next/navigation";
-import TraderComponent from "./components/trader-component";
+import TraderComponent from "./components/traderComponent";
+import { getUserByUsername } from "@/services/api/modules/users";
 
 export default async function TraderPage({
   params,
@@ -9,7 +9,7 @@ export default async function TraderPage({
 }) {
   const { username } = await params;
 
-  const profile = await getUserDataByUsername(username);
+  const profile = await getUserByUsername(username);
 
   if (!profile) return notFound();
 

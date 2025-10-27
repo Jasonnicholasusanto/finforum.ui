@@ -18,10 +18,8 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { FormEvent, useState } from "react";
 import { LuCalendar } from "react-icons/lu";
-import { createProfile } from "@/services/onboardingActions";
 import { useAppContext } from "@/contexts/app-context-provider";
-import { MotionButton } from "@/components/ui/motion-button";
-import { getUserData } from "@/services/getUserDataActions";
+import { createProfile, getUserProfile } from "@/services/api/modules/me";
 
 export function OnboardingGate({ onComplete }: { onComplete: () => void }) {
   const [open, setOpen] = useState(false);
@@ -45,7 +43,7 @@ export function OnboardingGate({ onComplete }: { onComplete: () => void }) {
     try {
       await createProfile({ full_name, dob, username, email_address });
 
-      const freshUser = await getUserData();
+      const freshUser = await getUserProfile();
       setUser(freshUser);
 
       onComplete();
@@ -123,14 +121,14 @@ export function OnboardingGate({ onComplete }: { onComplete: () => void }) {
               {error && (
                 <p className="text-sm text-red-500 font-medium">{error}</p>
               )}
-              <MotionButton
+              <Button
                 type="submit"
                 className="mt-2 w-full"
                 variant={loading ? "loading" : "default"}
                 disabled={loading}
               >
                 Save and continue
-              </MotionButton>
+              </Button>
             </div>
           </form>
         </CardContent>
