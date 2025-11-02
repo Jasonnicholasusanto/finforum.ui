@@ -3,7 +3,7 @@
 import { User } from "@/models/user";
 import { motion } from "motion/react";
 
-export default function StocksPage({ user }: { user: User | null }) {
+export default function StocksPage() {
   return (
     <motion.div
       initial={{ opacity: 0 }}

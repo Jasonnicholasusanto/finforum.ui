@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { OnboardingGate } from "./onboarding-gate";
+import { OnboardingGate } from "./onboardingGate";
 import { UserResponse } from "@/models/user";
 
 export function LayoutClient({

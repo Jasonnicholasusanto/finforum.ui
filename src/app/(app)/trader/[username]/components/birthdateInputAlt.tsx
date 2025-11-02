@@ -34,7 +34,7 @@ export function BirthDate({
   name: string;
   label?: string;
 }) {
-  const formik = useFormikContext<any>(); // ✅ optional if used inside Formik
+  const formik = useFormikContext<any>();
   const fieldValue = formik?.values?.[name];
   const [open, setOpen] = React.useState(false);
 

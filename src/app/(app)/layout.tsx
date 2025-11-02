@@ -2,7 +2,7 @@ import { ThemeProvider } from "next-themes";
 import "../../styles/globals.css";
 import { Navbar } from "@/components/layout/navbar/index";
 import { AppContextProvider } from "@/contexts/app-context-provider";
-import { LayoutClient } from "./layout-client";
+import { LayoutClient } from "./layoutClient";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { NavbarRoute } from "@/models/navbarRoute";
 import { UserResponse } from "@/models/user";
@@ -25,7 +25,7 @@ export default async function AppLayout({
       <TooltipProvider>
         <AppContextProvider user={user} authUser={authUser}>
           <Navbar navbarItems={navbarRoutes} />
-          <main className="flex-1 p-6 lg:p-8 mt-2">
+          <main className="flex-1 p-8 lg:p-12 mt-2">
             <LayoutClient user={user}>{children}</LayoutClient>
           </main>
         </AppContextProvider>

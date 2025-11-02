@@ -1,3 +1,3 @@
-export default async function ExplorePage({}: {}) {
+export default async function ExplorePage() {
   return <>Page placeholder</>;
 }

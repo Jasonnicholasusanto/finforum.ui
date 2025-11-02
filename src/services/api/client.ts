@@ -23,7 +23,6 @@ export async function apiClient<T>(
   try {
     return await apiFetch<T>(fullUrl, { ...options, headers });
   } catch (error) {
-    console.log("API Client Error:", error);
     if (error instanceof ApiError && error.status === 404) {
       return null as unknown as T;
     }

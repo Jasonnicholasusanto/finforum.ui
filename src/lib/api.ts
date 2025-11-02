@@ -22,7 +22,7 @@ export async function apiFetch<T>(
 
   const rawBody = await res.text();
 
-  let parsedBody: any;
+  let parsedBody;
   try {
     parsedBody = rawBody ? JSON.parse(rawBody) : {};
   } catch {

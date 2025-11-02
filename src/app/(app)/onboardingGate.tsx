@@ -1,6 +1,6 @@
 "use client";
 
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FieldProps } from "formik";
 import * as Yup from "yup";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,12 @@ import { toast } from "sonner";
 import { useAppContext } from "@/contexts/app-context-provider";
 import { createProfile, getUserProfile } from "@/services/api/modules/me";
 import { BirthDateInput } from "./trader/[username]/components/birthdateInputButton";
+
+interface OnboardingFormValues {
+  full_name: string;
+  username: string;
+  birth_date: string;
+}
 
 const OnboardingSchema = Yup.object().shape({
   full_name: Yup.string().required("Full name is required"),
@@ -45,7 +51,7 @@ export function OnboardingGate({ onComplete }: { onComplete: () => void }) {
         </CardHeader>
 
         <CardContent>
-          <Formik
+          <Formik<OnboardingFormValues>
             initialValues={{
               full_name: "",
               username: "",
@@ -85,9 +91,9 @@ export function OnboardingGate({ onComplete }: { onComplete: () => void }) {
             {({ isSubmitting, isValid, dirty }) => (
               <Form className="flex flex-col gap-4">
                 <div className="grid gap-6">
-                  {/* Full Name */}
+                  {/* Full Name input */}
                   <Field name="full_name">
-                    {({ field, meta }: any) => (
+                    {({ field, meta }: FieldProps<string>) => (
                       <div className="grid gap-3">
                         <Label htmlFor="full_name">Full name</Label>
                         <Input
@@ -109,9 +115,9 @@ export function OnboardingGate({ onComplete }: { onComplete: () => void }) {
                     )}
                   </Field>
 
-                  {/* Date of Birth */}
+                  {/* Date of Birth input */}
                   <Field name="birth_date">
-                    {({ meta }: any) => (
+                    {({ meta }: FieldProps<string>) => (
                       <div className="grid gap-3">
                         <Label htmlFor="birth_date">Date of birth</Label>
                         <BirthDateInput
@@ -132,9 +138,9 @@ export function OnboardingGate({ onComplete }: { onComplete: () => void }) {
                     )}
                   </Field>
 
-                  {/* Username */}
+                  {/* Username input */}
                   <Field name="username">
-                    {({ field, meta }: any) => (
+                    {({ field, meta }: FieldProps<string>) => (
                       <div className="grid gap-3">
                         <Label htmlFor="username">Username</Label>
                         <Input
@@ -156,7 +162,7 @@ export function OnboardingGate({ onComplete }: { onComplete: () => void }) {
                     )}
                   </Field>
 
-                  {/* Submit */}
+                  {/* Submit onboarding form */}
                   <Button
                     type="submit"
                     className="mt-2 w-full"
