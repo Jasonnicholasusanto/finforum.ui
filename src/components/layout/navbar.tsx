@@ -21,7 +21,7 @@ export default function Navbar() {
         dark:supports-[backdrop-filter]:bg-neutral-900/30
         bg-clip-padding shadow-sm
         before:content-[''] before:absolute before:inset-0 before:pointer-events-none
-        before:bg-[linear-gradient(to_bottom,rgba(255,255,255,0.35),transparent)]
+        before:bg-[linear-gradient(to_bottom,rgba(255,255,255,0.15),transparent)]
         before:opacity-60
       "
       >
