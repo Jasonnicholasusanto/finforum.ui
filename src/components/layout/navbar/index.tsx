@@ -3,7 +3,6 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useId } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { MdOutlineLogout, MdOutlineSettings } from "react-icons/md";
 import {
@@ -22,7 +21,7 @@ import { logout } from "@/services/authActions";
 import { redirect } from "next/navigation";
 import { useAppContext } from "@/contexts/app-context-provider";
 import { User } from "@/models/user";
-import { ExpandableSearch } from "@/components/layout/navbar/expandable-search";
+import { ExpandableSearch } from "@/components/layout/navbar/expandableSearch";
 import SettingsMenu from "./SettingsMenu";
 import { NavbarRoute } from "@/models/navbarRoute";
 import NavbarMenu from "./navbarMenu";
@@ -44,7 +43,6 @@ export function Navbar({
   navbarItems,
   ...props
 }: NavbarProps) {
-  const id = useId();
   const { user } = useAppContext();
   const parsedUser = user ? User.fromJSON(user) : null;
 
@@ -91,7 +89,6 @@ export function Navbar({
         {/* ---------------- Right Side ---------------- */}
         <div className="flex items-center gap-4">
           <ExpandableSearch
-            id={`input-${id}`}
             placeholder={searchPlaceholder}
             value={searchValue}
             onChange={onSearchChange}

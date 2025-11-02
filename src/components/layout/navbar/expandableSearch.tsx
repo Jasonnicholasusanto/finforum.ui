@@ -4,9 +4,9 @@ import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useId } from "react";
 
 interface ExpandableSearchProps {
-  id?: string;
   placeholder?: string;
   value?: string;
   onChange?: (value: string) => void;
@@ -14,12 +14,12 @@ interface ExpandableSearchProps {
 }
 
 export function ExpandableSearch({
-  id,
   placeholder = "Search…",
   value,
   onChange,
   className,
 }: ExpandableSearchProps) {
+  const id = useId();
   const [focused, setFocused] = React.useState(false);
 
   return (
@@ -35,7 +35,7 @@ export function ExpandableSearch({
         className="absolute left-2 text-muted-foreground/70 pointer-events-none"
       />
       <Input
-        id={id}
+        id={id ?? `input-${id}`}
         type="search"
         placeholder={placeholder}
         value={value}
