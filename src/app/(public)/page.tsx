@@ -5,15 +5,18 @@ import Navbar from "@/components/layout/navbar";
 import { MotionButton } from "@/components/ui/motion-button";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function LandingPage() {
-  const slogans = [
-    "A platform where finance meets community",
-    "Analytics and community in one platform",
-    "Your social hub for financial insights",
-    "Connect, discuss, and invest smarter",
-  ];
+  const slogans = useMemo(
+    () => [
+      "A platform where finance meets community",
+      "Analytics and community in one platform",
+      "Your social hub for financial insights",
+      "Connect, discuss, and invest smarter",
+    ],
+    []
+  );
 
   const [index, setIndex] = useState(0);
   const loopCount = useRef(0);

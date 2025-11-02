@@ -20,7 +20,7 @@ interface BirthDateInputProps extends React.HTMLAttributes<HTMLDivElement> {
 export const BirthDateInput = React.forwardRef<
   HTMLDivElement,
   BirthDateInputProps
->(({ name, placeholder = "Select date", className, ...props }, ref) => {
+>(({ name, placeholder = "Select date" }) => {
   const formik = useFormikContext<any>();
   const fieldValue = formik?.values?.[name];
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { User } from "@/models/user";
 import { motion } from "motion/react";
 
 export default function StocksPage() {

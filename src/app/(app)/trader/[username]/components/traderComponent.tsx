@@ -9,7 +9,6 @@ import { FaUserCircle } from "react-icons/fa";
 import { Card } from "@/components/ui/card";
 import { LuPencil } from "react-icons/lu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Skeleton } from "@/components/ui/skeleton";
 import EditProfileModal from "./updateProfileModal";
 import { Button } from "@/components/ui/button";
 

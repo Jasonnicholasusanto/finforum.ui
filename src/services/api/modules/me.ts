@@ -43,7 +43,10 @@ export async function softDeleteProfile() {
 
 export async function updateProfile(data: UpdateUserProfilePayload) {
   const filteredData = Object.fromEntries(
-    Object.entries(data).filter(([_, v]) => v != null && v !== "")
+    Object.entries(data).filter((entry) => {
+      const [, v] = entry;
+      return v != null && v !== "";
+    })
   );
   return apiClient<UserResponse>(
     `${Endpoints.Me.Base}${Endpoints.Me.Profile}`,

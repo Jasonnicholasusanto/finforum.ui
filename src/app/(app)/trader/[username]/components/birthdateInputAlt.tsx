@@ -38,7 +38,6 @@ export function BirthDate({
   const fieldValue = formik?.values?.[name];
   const [open, setOpen] = React.useState(false);
 
-  // convert Formik value (string or Date) → Date object
   const date =
     fieldValue instanceof Date
       ? fieldValue
@@ -51,7 +50,6 @@ export function BirthDate({
   const handleChange = (date: Date | undefined) => {
     setValue(formatDate(date));
     if (formik) {
-      // ✅ store ISO string in Formik state for API compatibility
       formik.setFieldValue(name, date ? date.toISOString() : "");
       formik.setFieldTouched(name, true, false);
     }
