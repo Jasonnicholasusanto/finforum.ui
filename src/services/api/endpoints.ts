@@ -1,3 +1,6 @@
+import { Search } from "lucide-react";
+import { searchHistory } from "./modules/search";
+
 export const Endpoints = {
   Me: {
     BaseVersion: "v1",
@@ -31,5 +34,33 @@ export const Endpoints = {
     BaseVersion: "v1",
     Base: "/favourite-stocks",
     ById: (id: number) => `/${id}`,
+  },
+  Yfinance: {
+    BaseVersion: "v1",
+    Base: "/yf",
+    Stocks: {
+      BaseVersion: "v1",
+      Base: "/stocks",
+      Info: (ticker: string) => `/get-ticker-info/${ticker}`,
+      SearchQuotes: (
+        query: string,
+        maxResult: number,
+        recommended: number,
+        enableFuzzyQuery: boolean
+      ) => {
+        const params = new URLSearchParams({
+          maxResult: maxResult.toString(),
+          recommended: recommended.toString(),
+          enableFuzzyQuery: enableFuzzyQuery.toString(),
+        });
+        return `/search-quotes/${encodeURIComponent(
+          query
+        )}?${params.toString()}`;
+      },
+    },
+  },
+  SearchHistory: {
+    BaseVersion: "v1",
+    Base: "/search-history",
   },
 };

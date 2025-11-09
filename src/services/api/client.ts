@@ -1,5 +1,6 @@
 import { ApiError, apiFetch } from "@/lib/api";
 import { API_BASE_URL, getAccessToken } from "./config";
+import { environment } from "@/lib/environment/env";
 
 interface ApiClientOptions extends RequestInit {
   version?: string;
@@ -10,7 +11,7 @@ export async function apiClient<T>(
   options: ApiClientOptions = {}
 ): Promise<T> {
   const token = await getAccessToken();
-  const version = options.version || process.env.API_VERSION;
+  const version = options.version || environment.apiVersion;
 
   const headers = {
     ...(options.headers || {}),

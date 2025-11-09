@@ -24,6 +24,7 @@ export const SettingsMenu = React.forwardRef<
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
+          id="settings-button"
           ref={ref}
           size="icon"
           variant="ghost"
