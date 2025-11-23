@@ -1,5 +1,5 @@
 import { ApiError, apiFetch } from "@/lib/api";
-import { API_BASE_URL, getAccessToken } from "./config";
+import { getAccessToken } from "./config";
 import { environment } from "@/lib/environment/env";
 
 interface ApiClientOptions extends RequestInit {
@@ -19,7 +19,7 @@ export async function apiClient<T>(
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
-  const fullUrl = `${API_BASE_URL}/api/${version}${path}`;
+  const fullUrl = `${environment.nextPublicFinforumApiUrl}/api/${version}${path}`;
 
   try {
     return await apiFetch<T>(fullUrl, { ...options, headers });

@@ -1,24 +1,27 @@
 "use client";
 
-import { motion } from "motion/react";
+import { Card } from "@/components/ui/card";
 import { StockInfoResponse } from "@/models/stocks";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { environment } from "@/lib/environment/env";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-// import StockStats from "./components/StockStats";
-// import StockFinancials from "./components/StockFinancials";
-// import StockAbout from "./components/StockAbout";
-// import StockCompanyInfo from "./components/StockCompanyInfo";
-// import StockDiscussions from "./components/StockDiscussions";
+import { motion } from "motion/react";
 
-export default function StockDetails({ stock }: { stock: StockInfoResponse }) {
-  const isPositive =
-    (stock.currentPrice ?? 0) - (stock.previousClose ?? 0) >= 0;
+interface StockDetailsProps {
+  stock: StockInfoResponse;
+}
 
-  const logoUrl = `${environment.logoKitTickerApiUrl}/${stock.symbol}?token=${environment.logoKitTickerApiToken}`;
+export default function StockDetails({ stock }: StockDetailsProps) {
+  if (!stock) return null;
+
+  const fmt = (v: number | undefined | null, decimals = 2) =>
+    v !== undefined && v !== null
+      ? v.toLocaleString("en-US", { maximumFractionDigits: decimals })
+      : "-";
+
+  const statRow = (label: string, value: any) => (
+    <div className="flex justify-between py-1 text-sm">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="font-medium">{value ?? "-"}</span>
+    </div>
+  );
 
   return (
     <motion.div
@@ -27,85 +30,131 @@ export default function StockDetails({ stock }: { stock: StockInfoResponse }) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      {/* Header */}
-      <section className="flex flex-col sm:flex-row items-center sm:items-end sm:justify-between gap-4">
-        <div className="flex items-center gap-5">
-          {/* <img
-            src={logoUrl}
-            alt={`${stock.shortName || stock.symbol} logo`}
-            width={56}
-            height={56}
-            loading="lazy"
-            style={{
-              borderRadius: "50%",
-              border: "1px solid var(--border-color)",
-            }}
-            onError={(e) => {
-              e.currentTarget.src = "/default-logo.png";
-            }}
-          /> */}
-          <Avatar className="w-16 h-16">
-            <AvatarImage
-              src={logoUrl}
-              alt={`${stock.shortName || stock.symbol} logo`}
-              loading="lazy"
-              className="object-cover"
-            />
-            <AvatarFallback className="text-xs font-medium">
-              {stock.symbol?.charAt(0).toUpperCase() || "?"}
-            </AvatarFallback>
-          </Avatar>
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* LEFT COLUMN — ABOUT */}
+        <Card className="p-6 space-y-6">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">
-              {stock.longName || stock.shortName || stock.symbol}
-            </h1>
-            <p className="text-muted-foreground text-sm">
-              {stock.symbol} • {stock.exchange || stock.market}
+            <h2 className="text-xl font-semibold mb-2">About</h2>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              {stock.longBusinessSummary || "No company description available."}
             </p>
           </div>
-        </div>
 
-        <div className="text-right">
-          <p className="text-3xl font-semibold">
-            {stock.currentPrice ? `$${stock.currentPrice.toFixed(2)}` : "N/A"}
-          </p>
-          {stock.previousClose && (
-            <p
-              className={cn(
-                "text-sm font-medium",
-                isPositive ? "text-green-500" : "text-red-500"
+          <div className="space-y-1">
+            {statRow("CEO", stock.companyOfficers?.[0]?.name || "—")}
+            {statRow("Industry", stock.industry)}
+            {statRow("Sector", stock.sector)}
+            {statRow(
+              "Website",
+              stock.website ? (
+                <a
+                  href={stock.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 text-blue-400 hover:text-blue-300"
+                >
+                  {stock.website}
+                </a>
+              ) : (
+                "—"
+              )
+            )}
+            {statRow("Country", stock.country)}
+            {statRow(
+              "Employees",
+              stock.fullTimeEmployees?.toLocaleString() ?? "—"
+            )}
+          </div>
+        </Card>
+
+        {/* RIGHT COLUMN — KEY STATISTICS */}
+        <Card className="p-6 space-y-6">
+          <h2 className="text-xl font-semibold">Key Statistics</h2>
+
+          <div className="space-y-4">
+            {/* PRICE + TRADING */}
+            <div>
+              <h3 className="text-lg font-medium mb-1">Trading</h3>
+              {statRow("Previous Close", fmt(stock.previousClose))}
+              {statRow("Open", fmt(stock.open))}
+              {statRow(
+                "Bid",
+                stock.bid ? `${fmt(stock.bid)} x ${stock.bidSize}` : "—"
               )}
-            >
-              {isPositive ? "+" : "-"}
-              {Math.abs(
-                (((stock.currentPrice ?? 0) - (stock.previousClose ?? 0)) /
-                  (stock.previousClose ?? 1)) *
-                  100
-              ).toFixed(2)}
-              %
-            </p>
-          )}
-        </div>
-      </section>
+              {statRow(
+                "Ask",
+                stock.ask ? `${fmt(stock.ask)} x ${stock.askSize}` : "—"
+              )}
+              {statRow(
+                "Day Range",
+                stock.regularMarketDayRange ||
+                  `${fmt(stock.dayLow)} – ${fmt(stock.dayHigh)}`
+              )}
+              {statRow(
+                "52-Week Range",
+                stock.fiftyTwoWeekRange ||
+                  `${fmt(stock.fiftyTwoWeekLow)} – ${fmt(
+                    stock.fiftyTwoWeekHigh
+                  )}`
+              )}
+              {statRow("Volume", stock.regularMarketVolume?.toLocaleString())}
+              {statRow(
+                "Avg Volume (3M)",
+                stock.averageDailyVolume3Month?.toLocaleString()
+              )}
+              {statRow(
+                "Avg Volume (10D)",
+                stock.averageDailyVolume10Day?.toLocaleString()
+              )}
+            </div>
 
-      <Separator />
+            {/* FUNDAMENTALS */}
+            <div>
+              <h3 className="text-lg font-medium mb-1">Fundamentals</h3>
+              {statRow(
+                "Market Cap",
+                stock.marketCap ? `$${fmt(stock.marketCap, 0)}` : "—"
+              )}
+              {statRow("Beta", fmt(stock.beta))}
+              {statRow("EPS (TTM)", fmt(stock.epsTrailingTwelveMonths))}
+              {statRow("PE (TTM)", fmt(stock.trailingPE))}
+              {statRow("Forward PE", fmt(stock.forwardPE))}
+              {statRow(
+                "Profit Margins",
+                stock.profitMargins !== undefined
+                  ? `${(stock.profitMargins * 100).toFixed(2)}%`
+                  : "—"
+              )}
+              {statRow(
+                "Operating Margins",
+                stock.operatingMargins !== undefined
+                  ? `${(stock.operatingMargins * 100).toFixed(2)}%`
+                  : "—"
+              )}
+            </div>
 
-      {/* Chart Placeholder */}
-      <Card className="p-6 h-[300px] flex items-center justify-center bg-muted/30">
-        <p className="text-muted-foreground">📈 Chart coming soon</p>
-      </Card>
-
-      {/* Core Components */}
-      {/* <StockStats stock={stock} />
-      <StockFinancials stock={stock} />
-      <StockAbout stock={stock} />
-      <StockCompanyInfo stock={stock} />
-      <StockDiscussions stock={stock} /> */}
-
-      {/* Actions */}
-      <div className="flex justify-end gap-3">
-        <Button variant="outline">Add to Watchlist</Button>
-        <Button>Discuss on FinForum</Button>
+            {/* DIVIDENDS */}
+            <div>
+              <h3 className="text-lg font-medium mb-1">Dividends</h3>
+              {statRow(
+                "Dividend Rate",
+                stock.dividendRate ? `$${fmt(stock.dividendRate)}` : "—"
+              )}
+              {statRow(
+                "Dividend Yield",
+                stock.dividendYield
+                  ? `${(stock.dividendYield * 100).toFixed(2)}%`
+                  : "—"
+              )}
+              {statRow(
+                "Payout Ratio",
+                stock.payoutRatio !== undefined
+                  ? `${(stock.payoutRatio * 100).toFixed(2)}%`
+                  : "—"
+              )}
+            </div>
+          </div>
+        </Card>
       </div>
     </motion.div>
   );

@@ -57,6 +57,10 @@ export const Endpoints = {
           query
         )}?${params.toString()}`;
       },
+      SimpleHistory: (ticker: string, interval: string, period: string) =>
+        `/get-ticker-history/${ticker}?interval=${encodeURIComponent(
+          interval
+        )}&period=${encodeURIComponent(period)}`,
     },
   },
   SearchHistory: {

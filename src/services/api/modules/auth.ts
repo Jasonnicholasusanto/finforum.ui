@@ -8,14 +8,3 @@ export async function getAuthUser() {
   const { data } = await supabase.auth.getUser();
   return data.user;
 }
-
-export async function getAccessToken(): Promise<string | null> {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getSession();
-
-  if (error || !data?.session) {
-    redirect("/auth/login");
-  }
-
-  return data.session?.access_token ?? null;
-}

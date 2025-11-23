@@ -48,7 +48,7 @@ function SearchQuoteItem({
           {item.symbol}
         </p>
         <p className="text-xs text-muted-foreground truncate min-w-0">
-          {item.longname || item.shortname}
+          {item.longname || item.shortname} &bull; {item.exchange}
         </p>
       </div>
     </div>

@@ -1,15 +1,14 @@
 export interface CompanyOfficer {
   name?: string;
   title?: string;
-  age?: number;
-  yearBorn?: number;
+  fiscalYear?: number;
   totalPay?: number;
   exercisedValue?: number;
   unexercisedValue?: number;
 }
 
 export interface StockInfoResponse {
-  /** Basic company info */
+  /** ---------------------- Basic company info ---------------------- */
   symbol: string;
   shortName?: string;
   longName?: string;
@@ -17,8 +16,21 @@ export interface StockInfoResponse {
   sector?: string;
   website?: string;
   longBusinessSummary?: string;
+  fullTimeEmployees?: number;
 
-  /** Financial position */
+  /** ---------------------- Address & contact ---------------------- */
+  address1?: string;
+  address2?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
+  phone?: string;
+
+  /** ---------------------- Employees & management ---------------------- */
+  companyOfficers?: CompanyOfficer[];
+
+  /** ---------------------- Financial position ---------------------- */
   enterpriseValue?: number;
   ebitda?: number;
   totalCash?: number;
@@ -27,79 +39,21 @@ export interface StockInfoResponse {
   debtToEquity?: number;
   quickRatio?: number;
   currentRatio?: number;
-
-  /** Address & contact */
-  address1?: string;
-  address2?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
-  country?: string;
-  phone?: string;
-  fullTimeEmployees?: number;
-
-  /** Employees & management */
-  companyOfficers?: CompanyOfficer[];
-
-  /** Revenue */
   totalRevenue?: number;
   revenuePerShare?: number;
   revenueGrowth?: number;
-
-  /** Margins */
-  grossMargins?: number;
-  ebitdaMargins?: number;
-  operatingMargins?: number;
-
-  /** Returns */
   returnOnAssets?: number;
   returnOnEquity?: number;
+  grossProfits?: number;
+  operatingCashflow?: number;
+  freeCashflow?: number;
+  profitMargins?: number;
+  operatingMargins?: number;
+  grossMargins?: number;
+  ebitdaMargins?: number;
+  financialCurrency?: string;
 
-  /** Stock / trading info */
-  currency?: string;
-  exchange?: string;
-  quoteType?: string;
-  market?: string;
-  marketCap?: number;
-  sharesOutstanding?: number;
-  floatShares?: number;
-  beta?: number;
-  volume?: number;
-  averageVolume?: number;
-  averageVolume10days?: number;
-  bid?: number;
-  ask?: number;
-  exchangeTimezoneName?: string;
-  exchangeTimezoneShortName?: string;
-  gmtOffSetMilliseconds?: number;
-
-  /** Governance / risk info */
-  auditRisk?: number;
-  boardRisk?: number;
-  compensationRisk?: number;
-  shareHolderRightsRisk?: number;
-  overallRisk?: number;
-  governanceEpochDate?: number;
-  compensationAsOfEpochDate?: number;
-
-  /** Prices info */
-  currentPrice?: number;
-  previousClose?: number;
-  priceHint?: number;
-  open?: number;
-  dayLow?: number;
-  dayHigh?: number;
-  allTimeHigh?: number;
-  allTimeLow?: number;
-  fiftyTwoWeekLow?: number;
-  fiftyTwoWeekHigh?: number;
-  fiftyDayAverage?: number;
-  twoHundredDayAverage?: number;
-  regularMarketOpen?: number;
-  regularMarketDayLow?: number;
-  regularMarketDayHigh?: number;
-
-  /** Earnings & valuation */
+  /** ---------------------- Earnings & valuation ---------------------- */
   earningsDate?: number[]; // epoch timestamps
   earningsAverage?: number;
   earningsLow?: number;
@@ -107,26 +61,138 @@ export interface StockInfoResponse {
   revenueAverage?: number;
   revenueLow?: number;
   revenueHigh?: number;
+  earningsQuarterlyGrowth?: number;
+  earningsTimestamp?: number;
+  trailingPE?: number;
+  forwardPE?: number;
+  trailingEps?: number;
+  forwardEps?: number;
+  epsTrailingTwelveMonths?: number;
+  epsForward?: number;
+  epsCurrentYear?: number;
+  priceEpsCurrentYear?: number;
+  bookValue?: number;
+  priceToBook?: number;
 
-  /** Dividends */
+  /** ---------------------- Dividends ---------------------- */
   dividendRate?: number;
   dividendYield?: number;
   payoutRatio?: number;
   trailingAnnualDividendRate?: number;
   trailingAnnualDividendYield?: number;
-  bookValue?: number;
-  priceToBook?: number;
+  fiveYearAvgDividendYield?: number;
+  exDividendDate?: number;
 
-  /** Targets & recommendations */
+  /** ---------------------- Stock / trading info ---------------------- */
+  currency?: string;
+  exchange?: string;
+  quoteType?: string;
+  hasPrePostMarketData?: boolean;
+  market?: string;
+  marketCap?: number;
+  sharesOutstanding?: number;
+  sharesShort?: number;
+  floatShares?: number;
+  impliedSharesOutstanding?: number;
+  heldPercentInsiders?: number;
+  heldPercentInstitutions?: number;
+  beta?: number;
+  volume?: number;
+  averageVolume?: number;
+  averageVolume10days?: number;
+  averageDailyVolume3Month?: number;
+  averageDailyVolume10Day?: number;
+  regularMarketVolume?: number;
+  bid?: number;
+  ask?: number;
+  bidSize?: number;
+  askSize?: number;
+  exchangeTimezoneName?: string;
+  exchangeTimezoneShortName?: string;
+  fullExchangeName?: string;
+  gmtOffSetMilliseconds?: number;
+  exchangeDataDelayedBy?: number;
+  quoteSourceName?: string;
+  language?: string;
+  region?: string;
+  typeDisp?: string;
+
+  /** ---------------------- Dates & splits ---------------------- */
+  lastFiscalYearEnd?: number;
+  nextFiscalYearEnd?: number;
+  mostRecentQuarter?: number;
+  lastSplitFactor?: string;
+  lastSplitDate?: number;
+
+  /** ---------------------- Prices info ---------------------- */
+  currentPrice?: number;
+  previousClose?: number;
+  priceHint?: number;
+  open?: number;
+  dayLow?: number;
+  dayHigh?: number;
+  regularMarketOpen?: number;
+  regularMarketDayLow?: number;
+  regularMarketDayHigh?: number;
+  regularMarketChange?: number;
+  regularMarketChangePercent?: number;
+  regularMarketTime?: number;
+  postMarketChange?: number;
+  postMarketChangePercent?: number;
+  postMarketPrice?: number;
+  postMarketTime?: number;
+  marketState?: string;
+  regularMarketPrice?: number;
+  regularMarketPreviousClose?: number;
+  regularMarketDayRange?: string;
+  fiftyTwoWeekLow?: number;
+  fiftyTwoWeekHigh?: number;
+  allTimeHigh?: number;
+  allTimeLow?: number;
+  fiftyDayAverage?: number;
+  twoHundredDayAverage?: number;
+  fiftyTwoWeekLowChange?: number;
+  fiftyTwoWeekLowChangePercent?: number;
+  fiftyTwoWeekHighChange?: number;
+  fiftyTwoWeekHighChangePercent?: number;
+  fiftyTwoWeekRange?: string;
+  fiftyTwoWeekChangePercent?: number;
+  SandP52WeekChange?: number;
+
+  /** ---------------------- Targets & recommendations ---------------------- */
   targetHighPrice?: number;
   targetLowPrice?: number;
   targetMeanPrice?: number;
   targetMedianPrice?: number;
   recommendationKey?: string;
+  recommendationMean?: number;
   numberOfAnalystOpinions?: number;
+  averageAnalystRating?: string;
 
-  /** Timestamps */
-  lastFiscalYearEnd?: number;
-  nextFiscalYearEnd?: number;
-  mostRecentQuarter?: number;
+  /** ---------------------- Governance / risk info ---------------------- */
+  auditRisk?: number;
+  boardRisk?: number;
+  compensationRisk?: number;
+  shareHolderRightsRisk?: number;
+  overallRisk?: number;
+  governanceEpochDate?: number;
+  compensationAsOfEpochDate?: number;
+}
+
+export interface HistoryPoint {
+  timestamp: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+  dividends: number;
+  stockSplits: number;
+}
+
+export interface StockHistoryResponse {
+  symbol: string;
+  change?: number;
+  change_percentage?: number;
+  history: Array<HistoryPoint>;
 }

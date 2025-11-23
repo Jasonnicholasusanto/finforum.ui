@@ -161,7 +161,7 @@ export function ExpandableSearch({
     <div
       className={cn(
         "relative flex items-center transition-all duration-300",
-        focused ? "w-86" : "w-32 md:w-48",
+        focused ? "w-112" : "w-32 md:w-64",
         className
       )}
     >

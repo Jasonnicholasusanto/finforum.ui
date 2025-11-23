@@ -1,5 +1,6 @@
 export const environment = {
-  nextPublicFinforumApiUrl: process.env.NEXT_PUBLIC_FINFORUM_API_URL || "",
+  nextPublicFinforumApiUrl:
+    process.env.NEXT_PUBLIC_FINFORUM_API_URL || "http://localhost:8000",
   apiVersion: process.env.API_VERSION || "",
   nextPublicSupabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || "",
   nextPublicSupabasePublishableOrAnonKey:

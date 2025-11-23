@@ -1,8 +1,9 @@
 import { getStockInfo } from "@/services/api/modules/stocks";
 import { StockInfoResponse } from "@/models/stocks";
+import StockHeader from "./components/stockHeader";
+import { Suspense } from "react";
+import StockChartBody from "./components/stockChartBody";
 import StockDetails from "./components/stockDetails";
-
-export const dynamic = "force-dynamic"; // this ensures fresh fetch on navigation
 
 export default async function StocksPage({
   params,
@@ -19,13 +20,37 @@ export default async function StocksPage({
     console.error("Error fetching stock info:", err);
   }
 
+  if (!stock)
+    return (
+      <p className="text-muted-foreground text-center mt-8">Stock not found.</p>
+    );
+
   return (
-    <div className="">
-      {stock ? (
+    <div className="space-y-8">
+      <Suspense
+        fallback={
+          <p className="text-muted-foreground">Loading stock details...</p>
+        }
+      >
+        <StockHeader stock={stock} />
+      </Suspense>
+
+      <Suspense
+        fallback={<p className="text-muted-foreground">Loading charts...</p>}
+      >
+        <StockChartBody
+          symbol={stock.symbol}
+          closingPrice={stock.currentPrice || stock.regularMarketPrice}
+        />
+      </Suspense>
+
+      <Suspense
+        fallback={
+          <p className="text-muted-foreground">Loading information...</p>
+        }
+      >
         <StockDetails stock={stock} />
-      ) : (
-        <p className="text-muted-foreground">Stock not found.</p>
-      )}
+      </Suspense>
     </div>
   );
 }
