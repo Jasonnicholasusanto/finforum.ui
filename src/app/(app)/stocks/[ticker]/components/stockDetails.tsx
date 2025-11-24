@@ -3,6 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { StockInfoResponse } from "@/models/stocks";
 import { motion } from "motion/react";
+import { useState } from "react";
 
 interface StockDetailsProps {
   stock: StockInfoResponse;
@@ -10,6 +11,15 @@ interface StockDetailsProps {
 
 export default function StockDetails({ stock }: StockDetailsProps) {
   if (!stock) return null;
+
+  const [expanded, setExpanded] = useState(false);
+
+  const summary =
+    stock.longBusinessSummary || "No company description available.";
+  const MAX_CHARS = 250; // adjust as needed
+
+  const isLong = summary.length > MAX_CHARS;
+  const displayedText = expanded ? summary : summary.slice(0, MAX_CHARS);
 
   const fmt = (v: number | undefined | null, decimals = 2) =>
     v !== undefined && v !== null
@@ -30,14 +40,25 @@ export default function StockDetails({ stock }: StockDetailsProps) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-3 gap-5">
         {/* LEFT COLUMN — ABOUT */}
-        <Card className="p-6 space-y-6">
+        <Card className="md:col-span-1 p-6 space-y-6">
           <div>
             <h2 className="text-xl font-semibold mb-2">About</h2>
+
             <p className="text-sm leading-relaxed text-muted-foreground">
-              {stock.longBusinessSummary || "No company description available."}
+              {displayedText}
+              {!expanded && isLong && "…"}
             </p>
+
+            {isLong && (
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="mt-2 text-xs font-medium text-blue-400 hover:underline"
+              >
+                {expanded ? "Show less" : "Show more"}
+              </button>
+            )}
           </div>
 
           <div className="space-y-1">
@@ -68,7 +89,7 @@ export default function StockDetails({ stock }: StockDetailsProps) {
         </Card>
 
         {/* RIGHT COLUMN — KEY STATISTICS */}
-        <Card className="p-6 space-y-6">
+        <Card className="md:col-span-2 p-6 space-y-6">
           <h2 className="text-xl font-semibold">Key Statistics</h2>
 
           <div className="space-y-4">

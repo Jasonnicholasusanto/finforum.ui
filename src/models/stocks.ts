@@ -141,6 +141,10 @@ export interface StockInfoResponse {
   postMarketChangePercent?: number;
   postMarketPrice?: number;
   postMarketTime?: number;
+  preMarketChange?: number;
+  preMarketChangePercent?: number;
+  preMarketPrice?: number;
+  preMarketTime?: number;
   marketState?: string;
   regularMarketPrice?: number;
   regularMarketPreviousClose?: number;

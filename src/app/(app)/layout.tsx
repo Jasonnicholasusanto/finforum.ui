@@ -25,7 +25,7 @@ export default async function AppLayout({
       <TooltipProvider>
         <AppContextProvider user={user} authUser={authUser}>
           <Navbar navbarItems={navbarRoutes} />
-          <main className="flex-1 p-8 lg:p-12 px-4 md:px-8 lg:px-12 2xl:px-16">
+          <main className="flex-1 p-8 lg:p-10 xl:p-12 px-4 md:px-8 lg:px-12 2xl:px-16">
             <LayoutClient user={user}>{children}</LayoutClient>
           </main>
         </AppContextProvider>

@@ -6,6 +6,8 @@ import { Separator } from "@/components/ui/separator";
 import { cn, convertEpochToDate } from "@/lib/utils";
 import { environment } from "@/lib/environment/env";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
+import { Badge } from "@/components/ui/badge";
 
 export default function StockHeader({ stock }: { stock: StockInfoResponse }) {
   const logoUrl = `${environment.logoKitTickerApiUrl}/${stock.symbol}?token=${environment.logoKitTickerApiToken}`;
@@ -58,58 +60,107 @@ export default function StockHeader({ stock }: { stock: StockInfoResponse }) {
               </p>
             </div>
             {stock.regularMarketChange && (
-              <div className="flex items-center gap-1 justify-end">
-                <p
-                  className={cn(
-                    "text-md font-bold",
-                    stock.regularMarketChange! > 0
-                      ? "text-green-500"
-                      : "text-red-500"
-                  )}
-                >
-                  {stock.regularMarketChange! >= 0 ? "+" : "-"} &#36;
-                  {Math.abs(stock.regularMarketChange!).toFixed(2)}
-                </p>
-                <p
-                  className={cn(
-                    "text-md font-bold",
-                    stock.regularMarketChangePercent! > 0
-                      ? "text-green-500"
-                      : "text-red-500"
-                  )}
-                >
-                  ({stock.regularMarketChangePercent! >= 0 ? "+" : "-"}
-                  {Math.abs(stock.regularMarketChangePercent!).toFixed(2)}&#37;)
-                </p>
-                <p className="text-md text-muted-foreground">At close</p>
-              </div>
+              <Badge variant="ticker" className="px-3 py-1 rounded-3xl">
+                <div className="flex items-center gap-1 justify-end">
+                  <p
+                    className={cn(
+                      "text-md font-bold flex flex-row items-center gap-0.5",
+                      stock.regularMarketChange! > 0
+                        ? "text-green-500"
+                        : "text-red-500"
+                    )}
+                  >
+                    {stock.regularMarketChange! >= 0 ? (
+                      <BiSolidUpArrow />
+                    ) : (
+                      <BiSolidDownArrow />
+                    )}
+                    &#36;
+                    {Math.abs(stock.regularMarketChange!).toFixed(2)}
+                  </p>
+                  <p
+                    className={cn(
+                      "text-md font-bold",
+                      stock.regularMarketChangePercent! > 0
+                        ? "text-green-500"
+                        : "text-red-500"
+                    )}
+                  >
+                    ({stock.regularMarketChangePercent! >= 0 ? "+" : "-"}
+                    {Math.abs(stock.regularMarketChangePercent!).toFixed(2)}
+                    &#37;)
+                  </p>
+                  <p className="text-md text-muted-foreground">At close</p>
+                </div>
+              </Badge>
             )}
             {stock.postMarketChange && (
-              <div className="flex items-center gap-1 justify-end">
-                <p
-                  className={cn(
-                    "text-md font-bold",
-                    stock.postMarketChange! > 0
-                      ? "text-green-500"
-                      : "text-red-500"
-                  )}
-                >
-                  {stock.postMarketChange! >= 0 ? "+" : "-"} &#36;
-                  {Math.abs(stock.postMarketChange!).toFixed(2)}
-                </p>
-                <p
-                  className={cn(
-                    "text-md font-bold",
-                    stock.postMarketChangePercent! > 0
-                      ? "text-green-500"
-                      : "text-red-500"
-                  )}
-                >
-                  ({stock.postMarketChangePercent! >= 0 ? "+" : "-"}
-                  {Math.abs(stock.postMarketChangePercent!).toFixed(2)}&#37;)
-                </p>
-                <p className="text-md text-muted-foreground">After hours</p>
-              </div>
+              <Badge variant="ticker" className="px-3 py-1 rounded-3xl">
+                <div className="flex items-center gap-1 justify-end">
+                  <p
+                    className={cn(
+                      "text-md font-bold",
+                      stock.postMarketChange! > 0
+                        ? "text-green-500"
+                        : "text-red-500"
+                    )}
+                  >
+                    {stock.postMarketChange! >= 0 ? (
+                      <BiSolidUpArrow />
+                    ) : (
+                      <BiSolidDownArrow />
+                    )}
+                    &#36;
+                    {Math.abs(stock.postMarketChange!).toFixed(2)}
+                  </p>
+                  <p
+                    className={cn(
+                      "text-md font-bold flex flex-row items-center gap-0.5",
+                      stock.postMarketChangePercent! > 0
+                        ? "text-green-500"
+                        : "text-red-500"
+                    )}
+                  >
+                    ({stock.postMarketChangePercent! >= 0 ? "+" : "-"}
+                    {Math.abs(stock.postMarketChangePercent!).toFixed(2)}&#37;)
+                  </p>
+                  <p className="text-md text-muted-foreground">After hours</p>
+                </div>
+              </Badge>
+            )}
+            {stock.preMarketChange && (
+              <Badge variant="ticker" className="px-3 py-1 rounded-3xl">
+                <div className="flex items-center gap-1 justify-end">
+                  <p
+                    className={cn(
+                      "text-md font-bold flex flex-row items-center gap-0.5",
+                      stock.preMarketChange! > 0
+                        ? "text-green-500"
+                        : "text-red-500"
+                    )}
+                  >
+                    {stock.preMarketChange! >= 0 ? (
+                      <BiSolidUpArrow />
+                    ) : (
+                      <BiSolidDownArrow />
+                    )}
+                    &#36;
+                    {Math.abs(stock.preMarketChange!).toFixed(2)}
+                  </p>
+                  <p
+                    className={cn(
+                      "text-md font-bold flex flex-row items-center gap-0.5",
+                      stock.preMarketChangePercent! > 0
+                        ? "text-green-500"
+                        : "text-red-500"
+                    )}
+                  >
+                    ({stock.preMarketChangePercent! >= 0 ? "+" : "-"}
+                    {Math.abs(stock.preMarketChangePercent!).toFixed(2)}&#37;)
+                  </p>
+                  <p className="text-md text-muted-foreground">Pre-market</p>
+                </div>
+              </Badge>
             )}
           </div>
           <div className="flex gap-1.5 items-center">

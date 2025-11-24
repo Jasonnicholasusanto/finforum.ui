@@ -26,7 +26,7 @@ export default async function StocksPage({
     );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <Suspense
         fallback={
           <p className="text-muted-foreground">Loading stock details...</p>

@@ -18,16 +18,15 @@ interface StockAreaLineChartProps {
   data: HistoryPoint[];
   symbol: string;
   change?: number;
+  period?: string;
 }
 
 export default function StockAreaLineChart({
   data,
   symbol,
   change,
+  period,
 }: StockAreaLineChartProps) {
-  const isPositive = change !== undefined ? change > 0 : true;
-  const areaColor = isPositive ? "#22c55e" : "#ef4444";
-
   if (!data || data.length === 0) {
     return (
       <div className="h-[300px] flex items-center justify-center text-muted-foreground">
@@ -35,6 +34,9 @@ export default function StockAreaLineChart({
       </div>
     );
   }
+
+  const isPositive = change !== undefined ? change > 0 : true;
+  const areaColor = isPositive ? "#22c55e" : "#ef4444";
 
   // Convert timestamp to readable date if needed
   const formattedData = data.map((d) => ({
@@ -47,6 +49,67 @@ export default function StockAreaLineChart({
             day: "numeric",
           }),
   }));
+
+  function formatXAxisLabel(iso: string, period?: string) {
+    const date = new Date(iso);
+
+    switch (period) {
+      // intraday (1d normally) → include time
+      case "1d":
+      case "5d":
+        return date
+          .toLocaleString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+          .replace(",", "");
+
+      // 1 week or shorter intraday ranges (like 30m candles)
+      case "1wk":
+      case "1w":
+        return date
+          .toLocaleString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+          .replace(",", "");
+
+      // 1 month or 3 month → show only day
+      case "1mo":
+      case "3mo":
+      case "6mo":
+        return date.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+
+      // 1 year or max → show month + year
+      case "1y":
+      case "2y":
+      case "5y":
+      case "10y":
+      case "max":
+        return date.toLocaleString("en-GB", {
+          month: "short",
+          year: "numeric",
+        });
+
+      // fallback default
+      default:
+        return date.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+    }
+  }
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload || payload.length === 0) return null;
@@ -86,13 +149,13 @@ export default function StockAreaLineChart({
   };
 
   return (
-    <div className="w-full h-[500px] pt-10">
+    <div className="w-full h-[500px] lg:h-[450px] pt-10">
       <ResponsiveContainer width="100%" maxHeight={500}>
         <ComposedChart
           data={data}
           responsive
           margin={{
-            top: 20,
+            top: 0,
             right: 0,
             left: 0,
             bottom: 0,
@@ -109,6 +172,7 @@ export default function StockAreaLineChart({
             tick={{ fontSize: 10 }}
             tickLine={false}
             axisLine={false}
+            tickFormatter={(iso) => formatXAxisLabel(iso, period)}
           />
           <YAxis
             yAxisId="price"
@@ -117,10 +181,13 @@ export default function StockAreaLineChart({
               const padding = range * 0.35;
               return [dataMin - padding, dataMax];
             }}
-            tickFormatter={(v) => `$${v.toFixed(2)}`}
+            tickFormatter={(v) => `$${v.toFixed(0)}`}
             tick={{ fontSize: 10 }}
             tickLine={false}
             axisLine={false}
+            orientation="right"
+            type="number"
+            allowDecimals={false}
           />
           <YAxis
             yAxisId="volume"
