@@ -1,6 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { StockInfoResponse } from "@/models/stocks";
 import { motion } from "motion/react";
 import { useState } from "react";
@@ -33,6 +34,17 @@ export default function StockDetails({ stock }: StockDetailsProps) {
     </div>
   );
 
+  function StatItem({ label, value }: { label: string; value: any }) {
+    return (
+      <div className="flex flex-col gap-0.5">
+        <span className="text-xs text-muted-foreground font-medium">
+          {label}
+        </span>
+        <span className="text-sm font-semibold">{value ?? "—"}</span>
+      </div>
+    );
+  }
+
   return (
     <motion.div
       className="space-y-8"
@@ -40,140 +52,156 @@ export default function StockDetails({ stock }: StockDetailsProps) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      <div className="grid md:grid-cols-3 gap-5">
-        {/* LEFT COLUMN — ABOUT */}
-        <Card className="md:col-span-1 p-6 space-y-6">
-          <div>
-            <h2 className="text-xl font-semibold mb-2">About</h2>
+      <div className="grid md:grid-cols-8 gap-5">
+        <Card className="md:col-span-3 p-6 space-y-6 gap-0">
+          <div className="space-y-6">
+            <h2 className="text-xl font-bold">About</h2>
+            <Separator />
 
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {displayedText}
-              {!expanded && isLong && "…"}
-            </p>
+            <div>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {displayedText}
+                {!expanded && isLong && "…"}
+              </p>
 
-            {isLong && (
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="mt-2 text-xs font-medium text-blue-400 hover:underline"
-              >
-                {expanded ? "Show less" : "Show more"}
-              </button>
-            )}
+              {isLong && (
+                <button
+                  onClick={() => setExpanded(!expanded)}
+                  className="text-xs font-medium text-blue-400 hover:underline"
+                >
+                  {expanded ? "Show less" : "Show more"}
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className="space-y-1">
-            {statRow("CEO", stock.companyOfficers?.[0]?.name || "—")}
-            {statRow("Industry", stock.industry)}
-            {statRow("Sector", stock.sector)}
-            {statRow(
-              "Website",
-              stock.website ? (
-                <a
-                  href={stock.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline underline-offset-2 text-blue-400 hover:text-blue-300"
-                >
-                  {stock.website}
-                </a>
-              ) : (
-                "—"
-              )
-            )}
-            {statRow("Country", stock.country)}
-            {statRow(
-              "Employees",
-              stock.fullTimeEmployees?.toLocaleString() ?? "—"
-            )}
+          <div className="grid grid-cols-2 gap-6">
+            <div className="flex flex-col gap-1">
+              <span className="text-xs text-muted-foreground font-medium">
+                CEO
+              </span>
+              <span className="text-sm font-semibold">
+                {stock.companyOfficers?.[0]?.name || "—"}
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <span className="text-xs text-muted-foreground font-medium">
+                Industry
+              </span>
+              <span className="text-sm font-semibold">
+                {stock.industry ?? "—"}
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <span className="text-xs text-muted-foreground font-medium">
+                Sector
+              </span>
+              <span className="text-sm font-semibold">
+                {stock.sector ?? "—"}
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <span className="text-xs text-muted-foreground font-medium">
+                Website
+              </span>
+              <span className="text-sm font-semibold">
+                {stock.website ? (
+                  <a
+                    href={stock.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 text-blue-400 hover:text-blue-300"
+                  >
+                    {stock.website}
+                  </a>
+                ) : (
+                  "—"
+                )}
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <span className="text-xs text-muted-foreground font-medium">
+                Country
+              </span>
+              <span className="text-sm font-semibold">
+                {stock.country ?? "—"}
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <span className="text-xs text-muted-foreground font-medium">
+                Employees
+              </span>
+              <span className="text-sm font-semibold">
+                {stock.fullTimeEmployees?.toLocaleString() ?? "—"}
+              </span>
+            </div>
           </div>
         </Card>
 
-        {/* RIGHT COLUMN — KEY STATISTICS */}
-        <Card className="md:col-span-2 p-6 space-y-6">
-          <h2 className="text-xl font-semibold">Key Statistics</h2>
+        <Card className="md:col-span-5 p-6 gap-6 space-y-0">
+          <h2 className="text-xl font-bold">Statistics</h2>
+          <Separator />
 
-          <div className="space-y-4">
-            {/* PRICE + TRADING */}
-            <div>
-              <h3 className="text-lg font-medium mb-1">Trading</h3>
-              {statRow("Previous Close", fmt(stock.previousClose))}
-              {statRow("Open", fmt(stock.open))}
-              {statRow(
-                "Bid",
-                stock.bid ? `${fmt(stock.bid)} x ${stock.bidSize}` : "—"
-              )}
-              {statRow(
-                "Ask",
-                stock.ask ? `${fmt(stock.ask)} x ${stock.askSize}` : "—"
-              )}
-              {statRow(
-                "Day Range",
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <StatItem label="Previous close" value={fmt(stock.previousClose)} />
+            <StatItem label="Open" value={fmt(stock.open)} />
+            <StatItem
+              label="Bid"
+              value={stock.bid ? `${fmt(stock.bid)} x ${stock.bidSize}` : "—"}
+            />
+            <StatItem
+              label="Ask"
+              value={stock.ask ? `${fmt(stock.ask)} x ${stock.askSize}` : "—"}
+            />
+            <StatItem
+              label="Day range"
+              value={
                 stock.regularMarketDayRange ||
-                  `${fmt(stock.dayLow)} – ${fmt(stock.dayHigh)}`
-              )}
-              {statRow(
-                "52-Week Range",
+                `${fmt(stock.dayLow)} &#45; ${fmt(stock.dayHigh)}`
+              }
+            />
+            <StatItem
+              label="52-Week range"
+              value={
                 stock.fiftyTwoWeekRange ||
-                  `${fmt(stock.fiftyTwoWeekLow)} – ${fmt(
-                    stock.fiftyTwoWeekHigh
-                  )}`
-              )}
-              {statRow("Volume", stock.regularMarketVolume?.toLocaleString())}
-              {statRow(
-                "Avg Volume (3M)",
-                stock.averageDailyVolume3Month?.toLocaleString()
-              )}
-              {statRow(
-                "Avg Volume (10D)",
-                stock.averageDailyVolume10Day?.toLocaleString()
-              )}
-            </div>
-
-            {/* FUNDAMENTALS */}
-            <div>
-              <h3 className="text-lg font-medium mb-1">Fundamentals</h3>
-              {statRow(
-                "Market Cap",
-                stock.marketCap ? `$${fmt(stock.marketCap, 0)}` : "—"
-              )}
-              {statRow("Beta", fmt(stock.beta))}
-              {statRow("EPS (TTM)", fmt(stock.epsTrailingTwelveMonths))}
-              {statRow("PE (TTM)", fmt(stock.trailingPE))}
-              {statRow("Forward PE", fmt(stock.forwardPE))}
-              {statRow(
-                "Profit Margins",
-                stock.profitMargins !== undefined
-                  ? `${(stock.profitMargins * 100).toFixed(2)}%`
+                `${fmt(stock.fiftyTwoWeekLow)} &#45; ${fmt(
+                  stock.fiftyTwoWeekHigh
+                )}`
+              }
+            />
+            <StatItem
+              label="Volume"
+              value={stock.regularMarketVolume?.toLocaleString() ?? "—"}
+            />
+            <StatItem
+              label="Avg. volume"
+              value={stock.averageDailyVolume3Month?.toLocaleString() ?? "—"}
+            />
+            <StatItem
+              label="Market cap"
+              value={stock.marketCap ? `$${fmt(stock.marketCap, 0)}` : "—"}
+            />
+            <StatItem
+              label="EPS (TTM)"
+              value={fmt(stock.epsTrailingTwelveMonths)}
+            />
+            <StatItem
+              label="PE ratio (TTM)"
+              value={stock.trailingPE ? `${fmt(stock.trailingPE)}` : "—"}
+            />
+            <StatItem
+              label="Earnings date"
+              value={
+                stock.earningsTimestamp
+                  ? `${fmt(stock.earningsTimestamp)}`
                   : "—"
-              )}
-              {statRow(
-                "Operating Margins",
-                stock.operatingMargins !== undefined
-                  ? `${(stock.operatingMargins * 100).toFixed(2)}%`
-                  : "—"
-              )}
-            </div>
-
-            {/* DIVIDENDS */}
-            <div>
-              <h3 className="text-lg font-medium mb-1">Dividends</h3>
-              {statRow(
-                "Dividend Rate",
-                stock.dividendRate ? `$${fmt(stock.dividendRate)}` : "—"
-              )}
-              {statRow(
-                "Dividend Yield",
-                stock.dividendYield
-                  ? `${(stock.dividendYield * 100).toFixed(2)}%`
-                  : "—"
-              )}
-              {statRow(
-                "Payout Ratio",
-                stock.payoutRatio !== undefined
-                  ? `${(stock.payoutRatio * 100).toFixed(2)}%`
-                  : "—"
-              )}
-            </div>
+              }
+            />
           </div>
         </Card>
       </div>

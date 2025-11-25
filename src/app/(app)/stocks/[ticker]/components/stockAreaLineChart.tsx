@@ -149,7 +149,7 @@ export default function StockAreaLineChart({
   };
 
   return (
-    <div className="w-full h-[500px] lg:h-[450px] pt-10">
+    <div className="w-full h-[500px] lg:h-[465px] pt-10">
       <ResponsiveContainer width="100%" maxHeight={500}>
         <ComposedChart
           data={data}

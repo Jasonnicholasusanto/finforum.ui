@@ -60,7 +60,15 @@ export default function StockHeader({ stock }: { stock: StockInfoResponse }) {
               </p>
             </div>
             {stock.regularMarketChange && (
-              <Badge variant="ticker" className="px-3 py-1 rounded-3xl">
+              <Badge
+                variant="ticker"
+                className={cn(
+                  "px-3 py-1 rounded-3xl",
+                  stock.regularMarketChange > 0
+                    ? "bg-green-500/10"
+                    : "bg-red-500/10"
+                )}
+              >
                 <div className="flex items-center gap-1 justify-end">
                   <p
                     className={cn(
@@ -90,12 +98,29 @@ export default function StockHeader({ stock }: { stock: StockInfoResponse }) {
                     {Math.abs(stock.regularMarketChangePercent!).toFixed(2)}
                     &#37;)
                   </p>
-                  <p className="text-md text-muted-foreground">At close</p>
+                  <p
+                    className={cn(
+                      "text-md",
+                      stock.regularMarketChangePercent! > 0
+                        ? "text-green-500"
+                        : "text-red-500"
+                    )}
+                  >
+                    At close
+                  </p>
                 </div>
               </Badge>
             )}
             {stock.postMarketChange && (
-              <Badge variant="ticker" className="px-3 py-1 rounded-3xl">
+              <Badge
+                variant="ticker"
+                className={cn(
+                  "px-3 py-1 rounded-3xl",
+                  stock.postMarketChange > 0
+                    ? "bg-green-500/10"
+                    : "bg-red-500/10"
+                )}
+              >
                 <div className="flex items-center gap-1 justify-end">
                   <p
                     className={cn(
@@ -124,12 +149,29 @@ export default function StockHeader({ stock }: { stock: StockInfoResponse }) {
                     ({stock.postMarketChangePercent! >= 0 ? "+" : "-"}
                     {Math.abs(stock.postMarketChangePercent!).toFixed(2)}&#37;)
                   </p>
-                  <p className="text-md text-muted-foreground">After hours</p>
+                  <p
+                    className={cn(
+                      "text-md",
+                      stock.postMarketChangePercent! > 0
+                        ? "text-green-500"
+                        : "text-red-500"
+                    )}
+                  >
+                    After hours
+                  </p>
                 </div>
               </Badge>
             )}
             {stock.preMarketChange && (
-              <Badge variant="ticker" className="px-3 py-1 rounded-3xl">
+              <Badge
+                variant="ticker"
+                className={cn(
+                  "px-3 py-1 rounded-3xl",
+                  stock.preMarketChange! > 0
+                    ? "bg-green-500/10"
+                    : "bg-red-500/10"
+                )}
+              >
                 <div className="flex items-center gap-1 justify-end">
                   <p
                     className={cn(
@@ -158,7 +200,16 @@ export default function StockHeader({ stock }: { stock: StockInfoResponse }) {
                     ({stock.preMarketChangePercent! >= 0 ? "+" : "-"}
                     {Math.abs(stock.preMarketChangePercent!).toFixed(2)}&#37;)
                   </p>
-                  <p className="text-md text-muted-foreground">Pre-market</p>
+                  <p
+                    className={cn(
+                      "text-md",
+                      stock.preMarketChange! > 0
+                        ? "text-green-500"
+                        : "text-red-500"
+                    )}
+                  >
+                    Pre-market
+                  </p>
                 </div>
               </Badge>
             )}
