@@ -11,6 +11,9 @@ import { LuPencil } from "react-icons/lu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EditProfileModal from "./updateProfileModal";
 import { Button } from "@/components/ui/button";
+import { useRef, useState } from "react";
+import { uploadProfilePicture } from "@/services/api/modules/me";
+import { Loader2 } from "lucide-react";
 
 export default function TraderComponent({
   profile,
@@ -24,6 +27,30 @@ export default function TraderComponent({
 
   const isOwner =
     parsedUser?.profile?.username?.toLowerCase() === username?.toLowerCase();
+
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [avatarUrl, setAvatarUrl] = useState(
+    parsedUser?.profile?.profile_picture || ""
+  );
+
+  async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      setUploading(true);
+      const res = await uploadProfilePicture(formData);
+      setAvatarUrl(res.profile_picture_url);
+    } catch (err) {
+      console.error("Failed to upload profile picture", err);
+    } finally {
+      setUploading(false);
+    }
+  }
 
   return (
     <Card className="w-full bg-card p-0 pb-12 rounded-xl">
@@ -47,12 +74,41 @@ export default function TraderComponent({
         </div>
 
         <div className="absolute left-12 top-26">
-          <Avatar className="w-36 h-36 border-4 border-background cursor-pointer transition">
-            <AvatarImage src={parsedUser?.profile?.profile_picture || ""} />
-            <AvatarFallback className="flex items-center justify-center bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-300">
-              <FaUserCircle className="size-34" />
-            </AvatarFallback>
-          </Avatar>
+          <div
+            className={`relative w-36 h-36 ${
+              isOwner ? "cursor-pointer group" : ""
+            }`}
+            onClick={() => isOwner && fileInputRef.current?.click()}
+          >
+            <Avatar className="w-full h-full border-4 border-background rounded-full overflow-hidden">
+              <AvatarImage src={avatarUrl} />
+              <AvatarFallback className="flex items-center justify-center bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-300">
+                <FaUserCircle className="size-34" />
+              </AvatarFallback>
+            </Avatar>
+
+            {isOwner && (
+              <div className="absolute rounded-full inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-sm transition">
+                <LuPencil size={28} />
+              </div>
+            )}
+
+            {uploading && (
+              <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-full">
+                <Loader2 size={28} className="animate-spin text-white" />
+              </div>
+            )}
+          </div>
+
+          {isOwner && (
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAvatarUpload}
+            />
+          )}
         </div>
       </div>
       <div className="px-8">
@@ -112,7 +168,7 @@ export default function TraderComponent({
         <Tabs defaultValue="watchlists" variant="outline" className="w-full">
           <TabsList variant="outline">
             <TabsTrigger variant="outline" value="watchlists">
-              Public Watchlists
+              Watchlists
             </TabsTrigger>
             <TabsTrigger variant="outline" value="topics">
               Topics

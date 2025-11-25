@@ -84,7 +84,6 @@ export async function uploadBannerImage(formData: FormData) {
     {
       method: "POST",
       body: formData,
-      // 👇 override default header so browser sets boundary
       headers: {},
       version: Endpoints.Me.BaseVersion,
     }
