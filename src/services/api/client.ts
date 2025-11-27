@@ -13,9 +13,8 @@ export async function apiClient<T>(
   const token = await getAccessToken();
   const version = options.version || environment.apiVersion;
 
-  const headers = {
+  const headers: HeadersInit = {
     ...(options.headers || {}),
-    "Content-Type": "application/json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 

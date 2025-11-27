@@ -100,13 +100,15 @@ export async function deleteBannerImage() {
   );
 }
 
-export async function uploadProfilePicture(formData: FormData) {
+export async function uploadProfilePicture(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+
   return apiClient<{ profile_picture_url: string }>(
     `${Endpoints.Me.Base}${Endpoints.Me.UploadProfilePicture}`,
     {
       method: "POST",
       body: formData,
-      headers: {},
       version: Endpoints.Me.BaseVersion,
     }
   );

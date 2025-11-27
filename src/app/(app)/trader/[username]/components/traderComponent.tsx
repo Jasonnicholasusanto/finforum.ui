@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useRef, useState } from "react";
 import { uploadProfilePicture } from "@/services/api/modules/me";
 import { Loader2 } from "lucide-react";
+import CropProfileImageComponent from "./cropProfileImageComponent";
 
 export default function TraderComponent({
   profile,
@@ -33,20 +34,29 @@ export default function TraderComponent({
   const [avatarUrl, setAvatarUrl] = useState(
     parsedUser?.profile?.profile_picture || ""
   );
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [cropOpen, setCropOpen] = useState(false);
 
   async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const formData = new FormData();
-    formData.append("file", file);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCropSrc(reader.result as string);
+      setCropOpen(true);
+    };
+    reader.readAsDataURL(file);
+  }
 
+  async function handleCroppedUpload(croppedFile: File) {
     try {
       setUploading(true);
-      const res = await uploadProfilePicture(formData);
+
+      const res = await uploadProfilePicture(croppedFile);
       setAvatarUrl(res.profile_picture_url);
     } catch (err) {
-      console.error("Failed to upload profile picture", err);
+      console.error("Failed uploading cropped image", err);
     } finally {
       setUploading(false);
     }
@@ -109,6 +119,12 @@ export default function TraderComponent({
               onChange={handleAvatarUpload}
             />
           )}
+          <CropProfileImageComponent
+            open={cropOpen}
+            onClose={() => setCropOpen(false)}
+            src={cropSrc || ""}
+            onCropped={handleCroppedUpload}
+          />
         </div>
       </div>
       <div className="px-8">

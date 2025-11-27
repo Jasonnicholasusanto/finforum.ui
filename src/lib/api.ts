@@ -11,10 +11,18 @@ export async function apiFetch<T>(
   url: string,
   options: RequestInit = {}
 ): Promise<T> {
+  const isFormData = options.body instanceof FormData;
+
   const res = await fetch(url, {
     ...options,
     headers: {
-      "Content-Type": "application/json",
+      // Only set Content-Type if not sending FormData
+      ...(isFormData
+        ? {}
+        : {
+            "Content-Type": "application/json",
+          }),
+
       ...(options.headers || {}),
     },
     credentials: "include",
@@ -28,6 +36,8 @@ export async function apiFetch<T>(
   } catch {
     parsedBody = rawBody;
   }
+
+  console.log("API FETCH", { url, options, res, parsedBody });
 
   if (!res.ok) {
     const message =
