@@ -12,9 +12,9 @@ interface StockDetailsProps {
 }
 
 export default function StockDetails({ stock }: StockDetailsProps) {
-  if (!stock) return null;
-
   const [expanded, setExpanded] = useState(false);
+
+  if (!stock) return null;
 
   const summary =
     stock.longBusinessSummary || "No company description available.";
@@ -27,13 +27,6 @@ export default function StockDetails({ stock }: StockDetailsProps) {
     v !== undefined && v !== null
       ? v.toLocaleString("en-US", { maximumFractionDigits: decimals })
       : "-";
-
-  const statRow = (label: string, value: any) => (
-    <div className="flex justify-between py-1 text-sm">
-      <span className="text-muted-foreground">{label}</span>
-      <span className="font-medium">{value ?? "-"}</span>
-    </div>
-  );
 
   function StatItem({ label, value }: { label: string; value: any }) {
     return (
