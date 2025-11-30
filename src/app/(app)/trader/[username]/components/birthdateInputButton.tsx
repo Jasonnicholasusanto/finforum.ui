@@ -24,18 +24,25 @@ export const BirthDateInput = React.forwardRef<
   const formik = useFormikContext<any>();
   const fieldValue = formik?.values?.[name];
 
+  // Convert stored string "YYYY-MM-DD" back into a Date for UI display
   const date =
-    fieldValue instanceof Date
-      ? fieldValue
-      : fieldValue
-      ? new Date(fieldValue)
+    fieldValue && typeof fieldValue === "string"
+      ? new Date(fieldValue + "T00:00:00")
       : undefined;
 
   const [open, setOpen] = React.useState(false);
 
   const handleSelect = (newDate: Date | undefined) => {
     if (!newDate) return;
-    formik.setFieldValue(name, newDate.toISOString());
+
+    // ⬇ Convert Date → timezone-free "YYYY-MM-DD"
+    const year = newDate.getFullYear();
+    const month = String(newDate.getMonth() + 1).padStart(2, "0");
+    const day = String(newDate.getDate()).padStart(2, "0");
+
+    const formatted = `${year}-${month}-${day}`;
+
+    formik.setFieldValue(name, formatted);
     formik.setFieldTouched(name, true, false);
     setOpen(false);
   };
@@ -50,8 +57,8 @@ export const BirthDateInput = React.forwardRef<
             className="justify-between"
             type="button"
           >
-            {date ? (
-              date.toLocaleDateString("en-AU")
+            {fieldValue ? (
+              new Date(fieldValue + "T00:00:00").toLocaleDateString("en-AU")
             ) : (
               <p className="text-muted-foreground">{placeholder}</p>
             )}

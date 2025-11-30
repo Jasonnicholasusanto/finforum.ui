@@ -37,8 +37,6 @@ export async function apiFetch<T>(
     parsedBody = rawBody;
   }
 
-  console.log("API FETCH", { url, options, res, parsedBody });
-
   if (!res.ok) {
     const message =
       (parsedBody && (parsedBody.detail || parsedBody.error)) ||

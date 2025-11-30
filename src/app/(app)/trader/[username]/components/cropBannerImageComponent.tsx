@@ -41,9 +41,7 @@ async function getCroppedImage(
   const ctx = canvas.getContext("2d")!;
   const rot = rad(rotation);
 
-  // rotated bounding box
   const { width: bW, height: bH } = rotateSize(img.width, img.height, rotation);
-
   canvas.width = bW;
   canvas.height = bH;
 
@@ -76,7 +74,7 @@ async function getCroppedImage(
   });
 }
 
-export default function CropProfileImageComponent({
+export default function BannerCropperComponent({
   open,
   onClose,
   src,
@@ -99,30 +97,28 @@ export default function CropProfileImageComponent({
   const handleCrop = async () => {
     try {
       const blob = await getCroppedImage(src, croppedAreaPixels, rotation);
-      const file = new File([blob], "profile.jpg", {
-        type: "image/jpeg",
-      });
+      const file = new File([blob], "banner.jpg", { type: "image/jpeg" });
       onCropped(file);
       onClose();
     } catch (err) {
-      console.error("Cropping failed:", err);
+      console.error("Banner cropping failed:", err);
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg">
-        <DialogTitle className="font-extrabold">Edit image</DialogTitle>
+      <DialogContent className="max-w-3xl">
+        <DialogTitle className="font-extrabold">Edit Banner</DialogTitle>
         <DialogDescription className="hidden"></DialogDescription>
 
-        <div className="relative w-full h-80 bg-black/40 rounded-md overflow-hidden">
+        <div className="relative w-full h-64 bg-black/40 rounded-md overflow-hidden">
           <Cropper
             image={src}
             crop={crop}
             zoom={zoom}
             rotation={rotation}
-            aspect={1}
-            cropShape="round"
+            aspect={6 / 0.7}
+            cropShape="rect"
             showGrid={false}
             onCropChange={setCrop}
             onZoomChange={setZoom}

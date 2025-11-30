@@ -78,7 +78,10 @@ export async function updateEmail(data: { email_address: string }) {
   });
 }
 
-export async function uploadBannerImage(formData: FormData) {
+export async function uploadBannerImage(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+
   return apiClient<{ banner_image_url: string }>(
     `${Endpoints.Me.Base}${Endpoints.Me.UploadBannerImage}`,
     {

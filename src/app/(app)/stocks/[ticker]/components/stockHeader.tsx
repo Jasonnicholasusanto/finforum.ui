@@ -124,7 +124,7 @@ export default function StockHeader({ stock }: { stock: StockInfoResponse }) {
                 <div className="flex items-center gap-1 justify-end">
                   <p
                     className={cn(
-                      "text-md font-bold",
+                      "text-md font-bold flex flex-row items-center gap-0.5",
                       stock.postMarketChange! > 0
                         ? "text-green-500"
                         : "text-red-500"

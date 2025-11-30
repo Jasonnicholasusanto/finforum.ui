@@ -12,9 +12,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EditProfileModal from "./updateProfileModal";
 import { Button } from "@/components/ui/button";
 import { useRef, useState } from "react";
-import { uploadProfilePicture } from "@/services/api/modules/me";
+import {
+  deleteBannerImage,
+  deleteProfilePicture,
+  getUserProfile,
+  uploadBannerImage,
+  uploadProfilePicture,
+} from "@/services/api/modules/me";
 import { Loader2 } from "lucide-react";
 import CropProfileImageComponent from "./cropProfileImageComponent";
+import ProfilePhotoDialog from "./profilePhotoDialog";
+import { toast } from "sonner";
+import BannerCropperComponent from "./cropBannerImageComponent";
+import BannerPhotoDialog from "./bannerPhotoDialog";
 
 export default function TraderComponent({
   profile,
@@ -23,19 +33,28 @@ export default function TraderComponent({
   profile: UserPublicResponse;
   username: string;
 }) {
-  const { user } = useAppContext();
+  const { user, setUser } = useAppContext();
+  const [photoDialogOpen, setPhotoDialogOpen] = useState(false);
+  const [bannerDialogOpen, setBannerDialogOpen] = useState(false);
   const parsedUser = user ? User.fromJSON(user) : null;
-
-  const isOwner =
-    parsedUser?.profile?.username?.toLowerCase() === username?.toLowerCase();
-
-  const [uploading, setUploading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [bannerLoading, setBannerLoading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(
-    parsedUser?.profile?.profile_picture || ""
+    parsedUser?.profile?.profile_picture || undefined
+  );
+  const [bannerUrl, setBannerUrl] = useState(
+    parsedUser?.profile?.background_picture ||
+      "/images/default-user-cover-image.jpg"
   );
   const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [cropOpen, setCropOpen] = useState(false);
+  const [bannerCropSrc, setBannerCropSrc] = useState<string | null>(null);
+  const [bannerCropOpen, setBannerCropOpen] = useState(false);
+  const profileInputRef = useRef<HTMLInputElement>(null);
+  const bannerInputRef = useRef<HTMLInputElement>(null);
+
+  const isOwner =
+    parsedUser?.profile?.username?.toLowerCase() === username?.toLowerCase();
 
   async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -49,17 +68,146 @@ export default function TraderComponent({
     reader.readAsDataURL(file);
   }
 
-  async function handleCroppedUpload(croppedFile: File) {
-    try {
-      setUploading(true);
+  async function handleBannerUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-      const res = await uploadProfilePicture(croppedFile);
-      setAvatarUrl(res.profile_picture_url);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setBannerCropSrc(reader.result as string);
+      setBannerCropOpen(true);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function handleAvatarRemove() {
+    const removeTask = (async () => {
+      try {
+        setProfileLoading(true);
+        await deleteProfilePicture();
+        const freshUser = await getUserProfile();
+        setUser(freshUser);
+        setAvatarUrl(undefined);
+      } catch (err) {
+        console.error("Failed removing banner image", err);
+        throw err;
+      } finally {
+        setProfileLoading(false);
+      }
+    })();
+
+    try {
+      await toast.promise(removeTask, {
+        loading: "Removing image...",
+        success: "Profile image removed",
+        error: (err) => ({
+          message: "Failed removing profile picture",
+          description: err?.message || "Please try again later.",
+        }),
+      });
     } catch (err) {
-      console.error("Failed uploading cropped image", err);
-    } finally {
-      setUploading(false);
+      // Error is already handled in the uploadTask
     }
+  }
+
+  async function handleBannerRemove() {
+    const removeTask = (async () => {
+      try {
+        setBannerLoading(true);
+        await deleteBannerImage();
+        const freshUser = await getUserProfile();
+        setUser(freshUser);
+        setBannerUrl("/images/default-user-cover-image.jpg");
+      } catch (err) {
+        console.error("Failed removing banner image", err);
+        throw err;
+      } finally {
+        setBannerLoading(false);
+      }
+    })();
+
+    try {
+      await toast.promise(removeTask, {
+        loading: "Removing image...",
+        success: "Banner image removed",
+        error: (err) => ({
+          message: "Failed removing banner image",
+          description: err?.message || "Please try again later.",
+        }),
+      });
+    } catch (err) {
+      // Error is already handled in the uploadTask
+    }
+  }
+
+  async function handleCroppedProfileUpload(croppedFile: File) {
+    const uploadTask = (async () => {
+      try {
+        setProfileLoading(true);
+        const res = await uploadProfilePicture(croppedFile);
+        const freshUser = await getUserProfile();
+        setUser(freshUser);
+        setAvatarUrl(res.profile_picture_url);
+      } catch (err) {
+        console.error("Failed uploading profile image", err);
+        throw err;
+      } finally {
+        setProfileLoading(false);
+      }
+    })();
+
+    try {
+      await toast.promise(uploadTask, {
+        loading: "Uploading photo...",
+        success: "Profile photo updated",
+        error: (err) => ({
+          message: "Upload failed",
+          description:
+            err?.message || "Please upload a smaller image or try again later.",
+        }),
+      });
+    } catch (err) {
+      // Error is already handled in the uploadTask
+    }
+  }
+
+  async function handleCroppedBannerUpload(croppedFile: File) {
+    const uploadTask = (async () => {
+      try {
+        setBannerLoading(true);
+        const res = await uploadBannerImage(croppedFile);
+        const freshUser = await getUserProfile();
+        setUser(freshUser);
+        setBannerUrl(res.banner_image_url);
+      } catch (err) {
+        console.error("Failed uploading banner image", err);
+        throw err;
+      } finally {
+        setBannerLoading(false);
+      }
+    })();
+
+    try {
+      await toast.promise(uploadTask, {
+        loading: "Uploading photo...",
+        success: "Banner image updated",
+        error: (err) => ({
+          message: "Upload failed",
+          description:
+            err?.message || "Please upload a smaller image or try again later.",
+        }),
+      });
+    } catch (err) {
+      // Error is already handled in the uploadTask
+    }
+  }
+
+  function openPhotoDialog() {
+    if (isOwner) setPhotoDialogOpen(true);
+  }
+
+  function openBannerDialog() {
+    if (isOwner) setBannerDialogOpen(true);
   }
 
   return (
@@ -67,7 +215,7 @@ export default function TraderComponent({
       <div className="mb-13 relative">
         <div className="relative h-50 w-full rounded-t-xl overflow-hidden">
           <Image
-            src="/images/default-user-cover-image.jpg"
+            src={bannerUrl}
             alt="Trader cover image"
             fill
             className="object-cover"
@@ -77,8 +225,15 @@ export default function TraderComponent({
               variant="ghost"
               size="sm"
               className="absolute right-4 top-4 bg-black/30 hover:bg-black/40 text-white"
+              onClick={() => {
+                if (!bannerLoading) openBannerDialog();
+              }}
             >
-              <LuPencil />
+              {!bannerLoading ? (
+                <LuPencil />
+              ) : (
+                <Loader2 className="animate-spin" />
+              )}
             </Button>
           )}
         </div>
@@ -88,7 +243,9 @@ export default function TraderComponent({
             className={`relative w-36 h-36 ${
               isOwner ? "cursor-pointer group" : ""
             }`}
-            onClick={() => isOwner && fileInputRef.current?.click()}
+            onClick={() => {
+              if (!profileLoading) openPhotoDialog();
+            }}
           >
             <Avatar className="w-full h-full border-4 border-background rounded-full overflow-hidden">
               <AvatarImage src={avatarUrl} />
@@ -103,29 +260,76 @@ export default function TraderComponent({
               </div>
             )}
 
-            {uploading && (
+            {profileLoading && (
               <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-full">
                 <Loader2 size={28} className="animate-spin text-white" />
               </div>
             )}
           </div>
-
-          {isOwner && (
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleAvatarUpload}
-            />
-          )}
-          <CropProfileImageComponent
-            open={cropOpen}
-            onClose={() => setCropOpen(false)}
-            src={cropSrc || ""}
-            onCropped={handleCroppedUpload}
-          />
         </div>
+        {/* Profile Photo Dialog */}
+        <ProfilePhotoDialog
+          open={photoDialogOpen}
+          onClose={() => setPhotoDialogOpen(false)}
+          avatarUrl={avatarUrl}
+          onUploadClick={() => {
+            setPhotoDialogOpen(false);
+            profileInputRef.current?.click();
+          }}
+          onRemove={() => {
+            handleAvatarRemove();
+            setPhotoDialogOpen(false);
+          }}
+        />
+
+        <BannerPhotoDialog
+          open={bannerDialogOpen}
+          onClose={() => setBannerDialogOpen(false)}
+          bannerUrl={bannerUrl}
+          onUploadClick={() => {
+            setBannerDialogOpen(false);
+            bannerInputRef.current?.click();
+          }}
+          onRemove={() => {
+            handleBannerRemove();
+            setBannerDialogOpen(false);
+          }}
+        />
+
+        {/* Hidden file input */}
+        {isOwner && (
+          <input
+            ref={profileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleAvatarUpload}
+          />
+        )}
+
+        {isOwner && (
+          <input
+            ref={bannerInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleBannerUpload}
+          />
+        )}
+
+        <CropProfileImageComponent
+          open={cropOpen}
+          onClose={() => setCropOpen(false)}
+          src={cropSrc || ""}
+          onCropped={handleCroppedProfileUpload}
+        />
+
+        <BannerCropperComponent
+          open={bannerCropOpen}
+          onClose={() => setBannerCropOpen(false)}
+          src={bannerCropSrc || ""}
+          onCropped={handleCroppedBannerUpload}
+        />
       </div>
       <div className="px-8">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
@@ -137,12 +341,7 @@ export default function TraderComponent({
                   : `Trader @ ${profile.profile.username}`}
               </p>
               <p className="text-neutral-400">
-                {isOwner
-                  ? `${user?.profile.full_name || user?.profile.display_name}`
-                  : `${
-                      profile?.profile.full_name ||
-                      profile?.profile.display_name
-                    }`}
+                {user?.profile.display_name || user?.profile.full_name}
               </p>
             </div>
             <div className="mt-6 flex items-center gap-8">
