@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { convertEpochToShortDate } from "@/lib/utils";
 import { StockInfoResponse } from "@/models/stocks";
 import { motion } from "motion/react";
 import { useState } from "react";
@@ -59,14 +60,24 @@ export default function StockDetails({ stock }: StockDetailsProps) {
             <Separator />
 
             <div>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {displayedText}
-                {!expanded && isLong && "…"}
-              </p>
+              <motion.div
+                key={expanded ? "expanded" : "collapsed"}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 0.8,
+                }}
+                className="overflow-hidden"
+              >
+                <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-wrap">
+                  {displayedText}
+                  {!expanded && isLong && "…"}
+                </p>
+              </motion.div>
 
               {isLong && (
                 <button
-                  onClick={() => setExpanded(!expanded)}
+                  onClick={() => setExpanded((p) => !p)}
                   className="text-xs font-medium text-blue-400 hover:underline"
                 >
                   {expanded ? "Show less" : "Show more"}
@@ -148,30 +159,41 @@ export default function StockDetails({ stock }: StockDetailsProps) {
           <Separator />
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <StatItem label="Previous close" value={fmt(stock.previousClose)} />
-            <StatItem label="Open" value={fmt(stock.open)} />
+            <StatItem
+              label="Previous close"
+              value={`$${fmt(stock.previousClose)}`}
+            />
+            <StatItem label="Open" value={`$${fmt(stock.open)}`} />
             <StatItem
               label="Bid"
-              value={stock.bid ? `${fmt(stock.bid)} x ${stock.bidSize}` : "—"}
+              value={stock.bid ? `${fmt(stock.bid)} x ${stock.bidSize}00` : "—"}
             />
             <StatItem
               label="Ask"
-              value={stock.ask ? `${fmt(stock.ask)} x ${stock.askSize}` : "—"}
+              value={stock.ask ? `${fmt(stock.ask)} x ${stock.askSize}00` : "—"}
             />
             <StatItem
               label="Day range"
               value={
-                stock.regularMarketDayRange ||
-                `${fmt(stock.dayLow)} &#45; ${fmt(stock.dayHigh)}`
+                stock.regularMarketDayRange
+                  ? stock.regularMarketDayRange
+                      .split("-")
+                      .map((v) => `$${fmt(Number(v.trim()))}`)
+                      .join(" - ")
+                  : `$${fmt(stock.dayLow)} - $${fmt(stock.dayHigh)}`
               }
             />
             <StatItem
               label="52-Week range"
               value={
-                stock.fiftyTwoWeekRange ||
-                `${fmt(stock.fiftyTwoWeekLow)} &#45; ${fmt(
-                  stock.fiftyTwoWeekHigh
-                )}`
+                stock.fiftyTwoWeekRange
+                  ? stock.fiftyTwoWeekRange
+                      .split("-")
+                      .map((v) => `$${fmt(Number(v.trim()))}`)
+                      .join(" - ")
+                  : `$${fmt(stock.fiftyTwoWeekLow)} - $${fmt(
+                      stock.fiftyTwoWeekHigh
+                    )}`
               }
             />
             <StatItem
@@ -198,7 +220,10 @@ export default function StockDetails({ stock }: StockDetailsProps) {
               label="Earnings date"
               value={
                 stock.earningsTimestamp
-                  ? `${fmt(stock.earningsTimestamp)}`
+                  ? `${convertEpochToShortDate(
+                      stock.earningsTimestamp,
+                      stock.exchangeTimezoneName!
+                    )}`
                   : "—"
               }
             />
