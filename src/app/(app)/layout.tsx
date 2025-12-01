@@ -1,9 +1,5 @@
-import { ThemeProvider } from "next-themes";
 import "../../styles/globals.css";
-import { Navbar } from "@/components/layout/navbar/index";
-import { AppContextProvider } from "@/contexts/app-context-provider";
-import { LayoutClient } from "./layoutClient";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { LayoutShell } from "./layoutShell";
 import { NavbarRoute } from "@/models/navbarRoute";
 import { UserResponse } from "@/models/user";
 import { User } from "@supabase/supabase-js";
@@ -21,15 +17,8 @@ export default async function AppLayout({
   const navbarRoutes: NavbarRoute[] | null = await getNavbarRoutes();
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <TooltipProvider>
-        <AppContextProvider user={user} authUser={authUser}>
-          <Navbar navbarItems={navbarRoutes} />
-          <main className="flex-1 p-8 lg:p-10 xl:p-12 px-4 md:px-8 lg:px-12 2xl:px-16">
-            <LayoutClient user={user}>{children}</LayoutClient>
-          </main>
-        </AppContextProvider>
-      </TooltipProvider>
-    </ThemeProvider>
+    <LayoutShell user={user} authUser={authUser} navbarRoutes={navbarRoutes}>
+      {children}
+    </LayoutShell>
   );
 }

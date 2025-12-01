@@ -21,10 +21,9 @@ import { logout } from "@/services/authActions";
 import { redirect } from "next/navigation";
 import { useAppContext } from "@/contexts/app-context-provider";
 import { User } from "@/models/user";
-import { ExpandableSearch } from "@/components/layout/navbar/expandableSearch";
-import SettingsMenu from "./SettingsMenu";
+import { ExpandableSearch } from "@/components/layout/navbar/components/expandableSearch";
 import { NavbarRoute } from "@/models/navbarRoute";
-import NavbarMenu from "./navbarMenu";
+import NavbarMenu from "./components/navbarMenu";
 
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   searchPlaceholder?: string;
@@ -61,9 +60,7 @@ export function Navbar({
       {...props}
     >
       <div className="flex h-full items-center justify-between">
-        {/* ---------------- Left Side ---------------- */}
         <div className="flex items-center gap-8">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <Image
               src="/images/secondary-logo-light.png"
@@ -86,11 +83,9 @@ export function Navbar({
           <NavbarMenu navbarItems={navbarItems || []} />
         </div>
 
-        {/* ---------------- Right Side ---------------- */}
         <div className="flex items-center gap-4">
           <ExpandableSearch placeholder="Search stocks, posts, users..." />
 
-          <SettingsMenu onItemClick={onSettingsItemClick} />
           <ModeToggle />
 
           <Separator
@@ -98,7 +93,6 @@ export function Navbar({
             className="mr-1 data-[orientation=vertical]:h-5"
           />
 
-          {/* User Avatar */}
           <DropdownMenu>
             <DropdownMenuTrigger className="rounded-full flex items-center justify-center border-4 border-transparent hover:border-accent transition-colors">
               <Tooltip delayDuration={500}>

@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { useAppContext } from "@/contexts/app-context-provider";
 import { createProfile, getUserProfile } from "@/services/api/modules/me";
-import { BirthDateInput } from "./trader/[username]/components/birthdateInputButton";
+import { BirthDateInput } from "../trader/[username]/components/birthdateInputButton";
 
 interface OnboardingFormValues {
   full_name: string;

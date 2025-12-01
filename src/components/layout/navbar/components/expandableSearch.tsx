@@ -4,9 +4,9 @@ import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SearchResults } from "./searchResult";
 import { useRouter } from "next/navigation";
 import { SearchHistoryDropdown } from "./searchHistory";
+import { SearchResult } from "./searchResult";
 
 interface ExpandableSearchProps {
   placeholder?: string;
@@ -197,7 +197,7 @@ export function ExpandableSearch({
 
           {/* --- Show Live Search Results --- */}
           {!showHistory && query.trim() && (
-            <SearchResults
+            <SearchResult
               results={results}
               loading={loading}
               hasSearched={hasSearched}

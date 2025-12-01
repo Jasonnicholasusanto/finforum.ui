@@ -58,7 +58,7 @@ function SearchQuoteItem({
 /**
  * Renders the search results dropdown content.
  */
-export function SearchResults({
+export function SearchResult({
   results,
   loading,
   hasSearched,
