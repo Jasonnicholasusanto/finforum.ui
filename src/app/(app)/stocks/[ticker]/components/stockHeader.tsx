@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { StockInfoResponse } from "@/models/stocks";
 import { Separator } from "@/components/ui/separator";
-import { cn, convertEpochToDate } from "@/lib/utils";
+import { cn, convertEpochToDate, formatPrice } from "@/lib/utils";
 import { environment } from "@/lib/environment/env";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
@@ -50,10 +50,9 @@ export default function StockHeader({ stock }: { stock: StockInfoResponse }) {
           <div className="text-right flex flex-row gap-3 items-end">
             <div className="flex items-baseline gap-2 justify-end">
               <p className="text-2xl font-extrabold">
-                &#36;
-                {stock.currentPrice
-                  ? `${stock.currentPrice.toFixed(2)}`
-                  : `${stock.regularMarketPrice?.toFixed(2)}`}
+                {formatPrice(stock.currentPrice)
+                  ? `${formatPrice(stock.currentPrice)}`
+                  : `${formatPrice(stock.regularMarketPrice)}`}
               </p>
               <p className="text-md text-muted-foreground">
                 {stock.currency ? ` ${stock.currency}` : ""}
@@ -83,7 +82,6 @@ export default function StockHeader({ stock }: { stock: StockInfoResponse }) {
                     ) : (
                       <BiSolidDownArrow />
                     )}
-                    &#36;
                     {Math.abs(stock.regularMarketChange!).toFixed(2)}
                   </p>
                   <p
@@ -135,7 +133,6 @@ export default function StockHeader({ stock }: { stock: StockInfoResponse }) {
                     ) : (
                       <BiSolidDownArrow />
                     )}
-                    &#36;
                     {Math.abs(stock.postMarketChange!).toFixed(2)}
                   </p>
                   <p
@@ -186,7 +183,6 @@ export default function StockHeader({ stock }: { stock: StockInfoResponse }) {
                     ) : (
                       <BiSolidDownArrow />
                     )}
-                    &#36;
                     {Math.abs(stock.preMarketChange!).toFixed(2)}
                   </p>
                   <p

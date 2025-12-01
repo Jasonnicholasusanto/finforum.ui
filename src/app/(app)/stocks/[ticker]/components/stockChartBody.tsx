@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HistoryPoint, StockHistoryResponse } from "@/models/stocks";
 import StockAreaLineChart from "./stockAreaLineChart";
-import { cn, stockDataPeriods } from "@/lib/utils";
+import { cn, formatPrice, stockDataPeriods } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -107,8 +107,7 @@ export default function StockChartBody({
                   )}
                 >
                   {change! >= 0 ? <BiSolidUpArrow /> : <BiSolidDownArrow />}
-                  &#36;
-                  {Math.abs(change).toFixed(2)}
+                  {formatPrice(Math.abs(change))}
                 </p>
                 <p
                   className={cn(

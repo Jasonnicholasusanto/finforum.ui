@@ -58,3 +58,11 @@ export const stockDataPeriods = [
   { label: "5Y", period: "5y", interval: "1wk", description: "5 Years" },
   { label: "MAX", period: "max", interval: "1mo", description: "Max" },
 ];
+
+export const formatPrice = (v?: number) =>
+  v == null
+    ? ""
+    : v.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
