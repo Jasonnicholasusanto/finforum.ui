@@ -16,14 +16,12 @@ import { HistoryPoint } from "@/models/stocks";
 
 interface StockAreaLineChartProps {
   data: HistoryPoint[];
-  symbol: string;
   change?: number;
   period?: string;
 }
 
 export default function StockAreaLineChart({
   data,
-  symbol,
   change,
   period,
 }: StockAreaLineChartProps) {
@@ -213,8 +211,8 @@ export default function StockAreaLineChart({
                 key={index}
                 fill={
                   entry.close < entry.open
-                    ? "hsl(0, 70%, 55%)"
-                    : "hsl(142, 70%, 45%)"
+                    ? "rgba(221,60,60,0.5)"
+                    : "rgba(34,195,93,0.5)"
                 }
               />
             ))}
