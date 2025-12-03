@@ -76,23 +76,65 @@ export default function StockChartBody({
     if (nextInterval) setInterval(nextInterval);
   }
 
+  function handleChartTypeChange(newType: string) {
+    if (newType === "line" || newType === "candle") {
+      setChartType(newType);
+    }
+  }
+
   return (
     <div>
       <div className="flex flex-end justify-between items-center mb-5">
-        <Tabs value={period} onValueChange={handleStockDataPeriodChange}>
-          <TabsList className="bg-muted gap-1 rounded-xl">
-            {stockDataPeriods.map((p) => (
-              <TabsTrigger
-                key={p.period}
-                value={p.period}
-                className="bg-muted rounded-lg cursor-pointer px-5"
-              >
-                {p.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-        <div className="flex flex-end justify-end items-center mb-3 gap-2">
+        <div className="flex items-center gap-3">
+          <Tabs value={period} onValueChange={handleStockDataPeriodChange}>
+            <TabsList className="bg-muted gap-1 rounded-xl h-9.5">
+              {stockDataPeriods.map((p) => (
+                <TabsTrigger
+                  key={p.period}
+                  value={p.period}
+                  className={cn(
+                    "rounded-lg cursor-pointer px-3 flex items-center justify-center h-full transition-all",
+                    "data-[state=active]:border data-[state=active]:border-primary data-[state=active]:bg-background",
+                    "data-[state=inactive]:opacity-50"
+                  )}
+                >
+                  {p.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+          <Tooltip delayDuration={500}>
+            <TooltipTrigger asChild>
+              <Tabs value={chartType} onValueChange={handleChartTypeChange}>
+                <TabsList className="bg-muted gap-1 rounded-xl h-9.5">
+                  <TabsTrigger
+                    className={cn(
+                      "rounded-lg cursor-pointer px-3 flex items-center justify-center h-full transition-all",
+                      "data-[state=active]:border data-[state=active]:border-primary data-[state=active]:bg-background",
+                      "data-[state=inactive]:opacity-50"
+                    )}
+                    value="line"
+                  >
+                    <LuChartArea />
+                  </TabsTrigger>
+
+                  <TabsTrigger
+                    value="candle"
+                    className={cn(
+                      "rounded-lg cursor-pointer px-3 transition-all",
+                      "data-[state=active]:border data-[state=active]:border-primary data-[state=active]:bg-background",
+                      "data-[state=inactive]:opacity-50"
+                    )}
+                  >
+                    <LuChartCandlestick />
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Toggle chart</TooltipContent>
+          </Tooltip>
+        </div>
+        <div className="flex flex-end justify-end items-center">
           {loading ? (
             <div className="text-right flex flex-row gap-5 items-end">
               <Badge
@@ -142,27 +184,6 @@ export default function StockChartBody({
               </Badge>
             </div>
           )}
-          <Tooltip delayDuration={500}>
-            <TooltipTrigger asChild>
-              <Button
-                size="sm"
-                variant="secondary"
-                onClick={() =>
-                  setChartType(chartType === "line" ? "candle" : "line")
-                }
-              >
-                {chartType === "line" ? (
-                  <LuChartArea />
-                ) : (
-                  <LuChartCandlestick />
-                )}
-              </Button>
-            </TooltipTrigger>
-
-            <TooltipContent side="bottom">
-              {chartType === "line" ? "Simple chart" : "Advanced chart"}
-            </TooltipContent>
-          </Tooltip>
         </div>
       </div>
 
@@ -171,7 +192,7 @@ export default function StockChartBody({
           <DotWave size="50" speed="1" color="white" />
         </div>
       ) : (
-        <div className="h-[500px] lg:h-[465px] flex items-center justify-center rounded-md">
+        <div className="h-[500px] lg:h-[465px] flex items-center justify-center rounded-md pt-10">
           {chartType === "line" ? (
             <StockAreaLineChart
               data={history}
@@ -179,7 +200,7 @@ export default function StockChartBody({
               period={period}
             />
           ) : (
-            <CandlestickChart data={history} />
+            <CandlestickChart data={history} symbol={symbol} />
           )}
         </div>
       )}
