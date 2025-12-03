@@ -37,6 +37,7 @@ export default function CandlestickChart({
       layout: {
         background: { type: ColorType.Solid, color: "transparent" },
         textColor: "#ccc",
+        attributionLogo: false,
       },
       grid: {
         vertLines: { color: "rgba(197,203,206,0.2)" },
@@ -105,9 +106,6 @@ export default function CandlestickChart({
     candleSeries.setData(candleData);
     volumeSeries.setData(volumeData);
 
-    // --------------------
-    // Legend Setup
-    // --------------------
     // --------------------
     // Legend Setup
     // --------------------
