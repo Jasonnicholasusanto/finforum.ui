@@ -4,11 +4,11 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { ticker: string } }
+  context: { params: Promise<{ ticker: string }> }
 ) {
   try {
     const { searchParams } = new URL(req.url);
-    const { ticker } = await params;
+    const { ticker } = await context.params;
     const interval = searchParams.get("interval") || "1d";
     const period = searchParams.get("period") || "1mo";
 
