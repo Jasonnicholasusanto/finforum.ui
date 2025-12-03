@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { environment } from "@/lib/environment/env";
 
 export interface LoginState {
   error: string | null;
@@ -14,7 +15,7 @@ export async function loginGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: process.env.GOOGLE_OAUTH_REDIRECT_URL,
+      redirectTo: environment.googleOAuthRedirectUrl,
       queryParams: {
         access_type: "offline",
         prompt: "consent",
@@ -35,11 +36,11 @@ export async function loginAction(
   formData: FormData
 ): Promise<LoginState> {
   const supabase = await createClient();
-  const data = {
+  const loginData = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   };
-  const { error } = await supabase.auth.signInWithPassword(data);
+  const { error } = await supabase.auth.signInWithPassword(loginData);
 
   if (error) {
     return { error: error.message };

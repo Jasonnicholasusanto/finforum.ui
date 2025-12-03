@@ -1,14 +1,16 @@
 "use client";
 
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useCallback, useState } from "react";
 import { UserResponse } from "@/models/user";
 import type { User } from "@supabase/supabase-js";
 import React from "react";
+import { getUserProfile } from "@/services/api/modules/me";
 
 interface AppContextType {
   user: UserResponse | null;
   authUser: User | null;
   setUser: (user: UserResponse | null) => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -23,8 +25,18 @@ export function AppContextProvider({
   authUser: User | null;
 }) {
   const [user, setUser] = useState(initialUser);
+
+  const refreshUser = useCallback(async () => {
+    try {
+      const res = await getUserProfile();
+      setUser(res);
+    } catch (err) {
+      console.error("refreshUser error:", err);
+    }
+  }, []);
+
   return (
-    <AppContext.Provider value={{ user, authUser, setUser }}>
+    <AppContext.Provider value={{ user, authUser, setUser, refreshUser }}>
       {children}
     </AppContext.Provider>
   );

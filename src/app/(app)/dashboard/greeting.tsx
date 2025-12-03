@@ -2,7 +2,7 @@
 
 import { useAppContext } from "@/contexts/app-context-provider";
 import { User } from "@/models/user";
-import { Suspense, use } from "react";
+import { Suspense } from "react";
 
 export function Greeting() {
   const hour = new Date().getHours();

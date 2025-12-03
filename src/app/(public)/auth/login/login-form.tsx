@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FaGoogle } from "react-icons/fa";
 import Link from "next/link";
-import { MotionButton } from "@/components/ui/motion-button";
 import { motion } from "motion/react";
 import { useFormStatus } from "react-dom";
 import { loginAction, loginGoogle, LoginState } from "@/services/authActions";
@@ -23,13 +22,13 @@ function SubmitButton() {
   const { pending } = useFormStatus();
 
   return (
-    <MotionButton
+    <Button
       type="submit"
       className="w-full"
       variant={pending ? "loading" : "default"}
     >
       Login
-    </MotionButton>
+    </Button>
   );
 }
 
@@ -45,14 +44,10 @@ function LoginGoogleButton() {
   }
 
   return (
-    <MotionButton
-      variant="secondary"
-      className="w-full"
-      onClick={handleGoogleLogin}
-    >
+    <Button variant="secondary" className="w-full" onClick={handleGoogleLogin}>
       <FaGoogle />
       Login with Google
-    </MotionButton>
+    </Button>
   );
 }
 

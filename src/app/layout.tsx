@@ -1,5 +1,6 @@
 import { plusJakartaSans, jetMono } from "@/lib/fonts";
 import "../styles/globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 export default async function RootLayout({
   children,
@@ -14,6 +15,7 @@ export default async function RootLayout({
     >
       <body suppressHydrationWarning={true} className="antialiased font-sans">
         {children}
+        <Toaster />
       </body>
     </html>
   );

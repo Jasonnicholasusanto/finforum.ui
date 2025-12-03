@@ -1,34 +1,24 @@
-import { ThemeProvider } from "next-themes";
 import "../../styles/globals.css";
-import { Navbar } from "@/components/layout/navbar/index";
-import { AppSidebar } from "@/components/layout/app-sidebar";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { getAuthUser, getUserData } from "@/services/getUserDataActions";
-import { AppContextProvider } from "@/contexts/app-context-provider";
-import { OnboardingGate } from "./onboarding-gate";
-import { LayoutClient } from "./layout-client";
+import { LayoutShell } from "./layoutShell";
+import { NavbarRoute } from "@/models/navbarRoute";
+import { UserResponse } from "@/models/user";
+import { User } from "@supabase/supabase-js";
+import { getNavbarRoutes } from "@/services/api/modules/navBar";
+import { getAuthUser } from "@/services/api/modules/auth";
+import { getUserProfile } from "@/services/api/modules/me";
 
 export default async function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getUserData();
-  const authUser = await getAuthUser();
+  const user: UserResponse | null = await getUserProfile();
+  const authUser: User | null = await getAuthUser();
+  const navbarRoutes: NavbarRoute[] | null = await getNavbarRoutes();
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <AppContextProvider user={user} authUser={authUser}>
-            <Navbar />
-            <main className="flex-1 p-8">
-              <LayoutClient user={user}>{children}</LayoutClient>
-            </main>
-          </AppContextProvider>
-        </SidebarInset>
-      </SidebarProvider>
-    </ThemeProvider>
+    <LayoutShell user={user} authUser={authUser} navbarRoutes={navbarRoutes}>
+      {children}
+    </LayoutShell>
   );
 }

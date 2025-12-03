@@ -8,37 +8,45 @@ export class ApiError extends Error {
 }
 
 export async function apiFetch<T>(
-  path: string,
+  url: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const baseUrl = process.env.NEXT_PUBLIC_FINFORUM_API_URL!;
-  const url = `${baseUrl}${path}`;
+  const isFormData = options.body instanceof FormData;
 
   const res = await fetch(url, {
     ...options,
     headers: {
-      "Content-Type": "application/json",
+      // Only set Content-Type if not sending FormData
+      ...(isFormData
+        ? {}
+        : {
+            "Content-Type": "application/json",
+          }),
+
       ...(options.headers || {}),
     },
     credentials: "include",
   });
 
-  if (!res.ok) {
-    let message: string;
+  const rawBody = await res.text();
 
-    try {
-      const data = await res.json();
-      if (typeof data === "object" && data.detail) {
-        message = data.detail;
-      } else {
-        message = JSON.stringify(data);
-      }
-    } catch {
-      message = await res.text();
-    }
+  let parsedBody;
+  try {
+    parsedBody = rawBody ? JSON.parse(rawBody) : {};
+  } catch {
+    parsedBody = rawBody;
+  }
+
+  if (!res.ok) {
+    const message =
+      (parsedBody && (parsedBody.detail || parsedBody.error)) ||
+      (typeof parsedBody === "string"
+        ? parsedBody
+        : JSON.stringify(parsedBody)) ||
+      `Request failed with status ${res.status}`;
 
     throw new ApiError(message, res.status);
   }
 
-  return res.json();
+  return parsedBody as T;
 }

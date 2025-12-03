@@ -5,9 +5,20 @@ export interface UserProfile {
   full_name: string;
   display_name: string | null;
   bio: string | null;
+  birth_date: string | null;
+  phone_number: string | null;
   profile_picture: string | null;
   background_picture: string | null;
   email_address: string;
+}
+
+export interface UpdateUserProfilePayload {
+  username?: string;
+  full_name?: string;
+  display_name?: string;
+  bio?: string;
+  birth_date?: string;
+  phone_number?: string;
 }
 
 export interface UserActivity {
@@ -30,19 +41,35 @@ export interface UserActivity {
 export interface UserResponse {
   profile: UserProfile;
   activity: UserActivity;
+  followers_count: number;
+  following_count: number;
 }
 
 export class User {
   profile: UserProfile;
   activity: UserActivity;
+  followers_count: number;
+  following_count: number;
 
-  constructor(profile: UserProfile, activity: UserActivity) {
+  constructor(
+    profile: UserProfile,
+    activity: UserActivity,
+    followers_count: number,
+    following_count: number
+  ) {
     this.profile = profile;
     this.activity = activity;
+    this.followers_count = followers_count;
+    this.following_count = following_count;
   }
 
   static fromJSON(json: UserResponse): User {
-    return new User(json.profile, json.activity);
+    return new User(
+      json.profile,
+      json.activity,
+      json.followers_count,
+      json.following_count
+    );
   }
 
   get userFirstName(): string {
