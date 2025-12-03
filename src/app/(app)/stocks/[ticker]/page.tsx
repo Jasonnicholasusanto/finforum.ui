@@ -38,10 +38,7 @@ export default async function StocksPage({
       <Suspense
         fallback={<p className="text-muted-foreground">Loading charts...</p>}
       >
-        <StockChartBody
-          symbol={stock.symbol}
-          closingPrice={stock.currentPrice || stock.regularMarketPrice}
-        />
+        <StockChartBody symbol={stock.symbol} />
       </Suspense>
 
       <Suspense

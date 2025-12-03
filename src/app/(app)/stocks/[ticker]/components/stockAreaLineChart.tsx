@@ -1,13 +1,11 @@
 "use client";
 
 import {
-  AreaChart,
   Area,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  CartesianGrid,
   Bar,
   ComposedChart,
   Cell,
@@ -117,7 +115,7 @@ export default function StockAreaLineChart({
       // Extract date/time portion before offset
       const [datePart, timeAndOffset] = iso.split("T");
       const [timePart] = timeAndOffset.split(/[+-]/); // strip timezone offset
-      const [year, month, day] = datePart.split("-");
+      const [year, day] = datePart.split("-");
       const [hour, minute] = timePart.split(":");
 
       const d = new Date(iso); // for weekday/month names (localizable)

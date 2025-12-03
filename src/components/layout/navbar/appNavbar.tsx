@@ -26,22 +26,10 @@ import { NavbarRoute } from "@/models/navbarRoute";
 import NavbarMenu from "./components/navbarMenu";
 
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
-  searchPlaceholder?: string;
-  searchValue?: string;
-  onSearchChange?: (value: string) => void;
-  onSettingsItemClick?: (item: string) => void;
   navbarItems?: NavbarRoute[] | null;
 }
 
-export function Navbar({
-  className,
-  searchPlaceholder = "Search stocks, posts, users...",
-  searchValue,
-  onSearchChange,
-  onSettingsItemClick,
-  navbarItems,
-  ...props
-}: NavbarProps) {
+export function Navbar({ className, navbarItems, ...props }: NavbarProps) {
   const { user } = useAppContext();
   const parsedUser = user ? User.fromJSON(user) : null;
 

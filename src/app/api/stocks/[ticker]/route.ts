@@ -1,4 +1,3 @@
-import { environment } from "@/lib/environment/env";
 import { getStockHistory } from "@/services/api/modules/stocks";
 import { NextResponse } from "next/server";
 

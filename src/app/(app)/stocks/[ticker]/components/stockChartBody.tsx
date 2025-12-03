@@ -10,24 +10,18 @@ import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DotWave } from "ldrs/react";
 import CandlestickChart from "./stockCandleStickChart";
-import { Button } from "@/components/ui/button";
 import { LuChartArea, LuChartCandlestick } from "react-icons/lu";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { motion } from "motion/react";
 
 interface StockChartProps {
   symbol: string;
-  closingPrice?: number;
 }
 
-export default function StockChartBody({
-  symbol,
-  closingPrice,
-}: StockChartProps) {
+export default function StockChartBody({ symbol }: StockChartProps) {
   const [history, setHistory] = useState<HistoryPoint[]>([]);
   const [change, setChange] = useState(0);
   const [percentChange, setPercentChange] = useState(0);

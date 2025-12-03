@@ -1,6 +1,3 @@
-import { Search } from "lucide-react";
-import { searchHistory } from "./modules/search";
-
 export const Endpoints = {
   Me: {
     BaseVersion: "v1",
