@@ -29,6 +29,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { LuListPlus } from "react-icons/lu";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 interface CreateWatchlistDialogProps {
   isIconOnly?: boolean;
@@ -158,14 +159,25 @@ export function CreateWatchlistDialog({
               {/* Watchlist name */}
               <div className="flex flex-col gap-2">
                 <Label>Watchlist name *</Label>
-                <Field
-                  as={Input}
-                  name="name"
-                  placeholder="e.g. Tech Growth Picks"
-                />
-                {errors.name && touched.name && (
-                  <p className="text-red-500 text-sm">{errors.name}</p>
-                )}
+
+                <Field name="name">
+                  {({ field, meta }: any) => (
+                    <>
+                      <Input
+                        {...field}
+                        placeholder="e.g. Tech Growth Picks"
+                        className={cn(
+                          "rounded-lg",
+                          meta.touched && meta.error && "border-destructive"
+                        )}
+                      />
+
+                      {meta.touched && meta.error && (
+                        <p className="text-destructive text-sm">{meta.error}</p>
+                      )}
+                    </>
+                  )}
+                </Field>
               </div>
 
               {/* Description */}
