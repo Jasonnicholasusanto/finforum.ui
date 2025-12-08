@@ -1,4 +1,4 @@
-import { CopyrightFooter } from "@/components/copyright-footer";
+import { CopyrightFooter } from "@/components/copyrightFooter";
 import Link from "next/link";
 import { UpdatePasswordForm } from "./update-password-form";
 

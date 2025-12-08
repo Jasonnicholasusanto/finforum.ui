@@ -77,7 +77,7 @@ export function OnboardingGate({ onComplete }: { onComplete: () => void }) {
                 })(),
                 {
                   loading: "Creating profile...",
-                  success: "Profile created successfully!",
+                  success: "Profile created successfully.",
                   error: (err) => ({
                     message: "Failed to create profile.",
                     description: err?.message || "Please try again later.",

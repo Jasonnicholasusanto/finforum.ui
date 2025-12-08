@@ -1,4 +1,4 @@
-import { CopyrightFooter } from "@/components/copyright-footer";
+import { CopyrightFooter } from "@/components/copyrightFooter";
 import { SignUpForm } from "@/app/(public)/auth/sign-up/signup-form";
 import Link from "next/link";
 import Image from "next/image";

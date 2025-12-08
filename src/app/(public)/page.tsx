@@ -1,6 +1,6 @@
 "use client";
 
-import BlurText from "@/components/blur-text";
+import BlurText from "@/components/blurText";
 import Navbar from "@/components/layout/navbar";
 import { MotionButton } from "@/components/ui/motion-button";
 import { AnimatePresence, motion } from "motion/react";

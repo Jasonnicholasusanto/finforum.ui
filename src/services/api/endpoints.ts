@@ -1,3 +1,5 @@
+import { Delete } from "lucide-react";
+
 export const Endpoints = {
   Me: {
     BaseVersion: "v1",
@@ -25,7 +27,14 @@ export const Endpoints = {
   Watchlists: {
     BaseVersion: "v1",
     Base: "/watchlists",
-    ById: (id: number) => `/watchlists/${id}`,
+    WatchlistTypes: "/types",
+    WatchlistByName: (name: string) => `/@${name}`,
+    MyWatchlists: `/me`,
+    WatchlistItems: (watchlistId: number) => `/${watchlistId}/items`,
+    AddWatchlistItem: `/add-item`,
+    AddWatchlistItemsBulk: (watchlistId: number) => `/add-items/${watchlistId}`,
+    DeleteWatchlistItem: (itemId: number) => `/item/${itemId}`,
+    DeleteWatchlist: (watchlistId: number) => `/${watchlistId}`,
   },
   FavouriteStocks: {
     BaseVersion: "v1",

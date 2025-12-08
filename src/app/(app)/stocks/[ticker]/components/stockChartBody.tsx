@@ -10,12 +10,18 @@ import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DotWave } from "ldrs/react";
 import CandlestickChart from "./stockCandleStickChart";
-import { LuChartArea, LuChartCandlestick } from "react-icons/lu";
+import {
+  LuChartArea,
+  LuChartCandlestick,
+  LuEye,
+  LuHeart,
+} from "react-icons/lu";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
 interface StockChartProps {
   symbol: string;
@@ -126,6 +132,22 @@ export default function StockChartBody({ symbol }: StockChartProps) {
               </Tabs>
             </TooltipTrigger>
             <TooltipContent side="bottom">Toggle chart</TooltipContent>
+          </Tooltip>
+          <Tooltip delayDuration={500}>
+            <TooltipTrigger asChild>
+              <Button variant="default" className="rounded-xl p-2">
+                <LuEye />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Add to watchlist</TooltipContent>
+          </Tooltip>
+          <Tooltip delayDuration={500}>
+            <TooltipTrigger asChild>
+              <Button variant="secondary" className="rounded-xl p-2">
+                <LuHeart />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Add to favourites</TooltipContent>
           </Tooltip>
         </div>
         <div className="flex flex-end justify-end items-center">
