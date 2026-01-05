@@ -28,6 +28,7 @@ export const Endpoints = {
     BaseVersion: "v1",
     Base: "/watchlists",
     WatchlistTypes: "/types",
+    WatchlistQuantityTypes: "/allocation-types",
     WatchlistByName: (name: string) => `/@${name}`,
     MyWatchlists: `/me`,
     WatchlistItems: (watchlistId: number) => `/${watchlistId}/items`,
@@ -67,6 +68,17 @@ export const Endpoints = {
         `/get-ticker-history/${ticker}?interval=${encodeURIComponent(
           interval
         )}&period=${encodeURIComponent(period)}`,
+    },
+    Screener: {
+      BaseVersion: "v1",
+      Base: "/screen",
+      Curated: (assetType: "equity" | "fund", limit = 25) =>
+        `/curated?asset_type=${assetType}&limit=${limit}`,
+      PredefinedQueries: "/predefined-queries",
+      EquityValidInputs: "/equity-valid-inputs",
+      FundValidInputs: "/fund-valid-inputs",
+      PredefinedQueryResults: (category: string, limit = 25) =>
+        `/predefined-queries-result/${category}?limit=${limit}`,
     },
   },
   SearchHistory: {

@@ -16,6 +16,16 @@ export async function getWatchlistTypes(): Promise<string[] | null> {
   );
 }
 
+export async function getWatchlistQuantityTypes(): Promise<string[] | null> {
+  return apiClient<string[]>(
+    `${Endpoints.Watchlists.Base}${Endpoints.Watchlists.WatchlistQuantityTypes}`,
+    {
+      method: "GET",
+      version: Endpoints.Watchlists.BaseVersion,
+    }
+  );
+}
+
 export async function getMyWatchlists(): Promise<GetMyWatchlistsResponse> {
   return apiClient<GetMyWatchlistsResponse>(
     `${Endpoints.Watchlists.Base}${Endpoints.Watchlists.MyWatchlists}`,

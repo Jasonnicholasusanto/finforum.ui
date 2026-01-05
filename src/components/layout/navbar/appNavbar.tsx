@@ -24,8 +24,7 @@ import { User } from "@/models/user";
 import { ExpandableSearch } from "@/components/layout/navbar/components/expandableSearch";
 import { NavbarRoute } from "@/models/navbarRoute";
 import NavbarMenu from "./components/navbarMenu";
-import { Button } from "@/components/ui/button";
-import { CreateWatchlistDialog } from "@/components/createWatchlistDialog";
+import { CreateWatchlistDialog } from "@/components/createWatchlistDialog/mainDialog";
 
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   navbarItems?: NavbarRoute[] | null;
